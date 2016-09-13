@@ -54,7 +54,7 @@ public class Bird extends Pane {
                     Game.wallCounter++;
                     if (Game.wallCounter%2==0){
                         Game.score++;
-                        Score.showScore(Game.score);
+                        Game.scoreBar.showScore(Game.score);
                     }
                 }
 
@@ -64,7 +64,7 @@ public class Bird extends Pane {
     }
 
     public void moveY(int value){
-        boolean moveDown = value > 0 ? true : false;
+        boolean moveDown = value > 0;
 
         for (int i = 0; i < Math.abs(value); i++) {
             for (Wall wall:Game.walls) {

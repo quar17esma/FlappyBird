@@ -5,13 +5,9 @@ import javafx.scene.layout.Pane;
 
 public class Score extends Pane {
     Image scoreImg;
-    static ImageView scoreImgV;
-    static final double WIDTH = 32;
+    ImageView scoreImgV;
+    static final double WIDTH = 28;
     static final double HEIGHT = 36;
-
-    public enum Score_Numbers {
-        ONE, TWO, TREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, ZERO
-    }
 
     public Score() {                                                             //общее изображение
         scoreImg = new Image(getClass().getResourceAsStream("ScoreNumbers.png"));
@@ -24,40 +20,39 @@ public class Score extends Pane {
         getChildren().add(scoreImgV);
     }
 
-    public static void showScore(int score) {
-//        Score_Numbers number = score;
-//        scoreImgV =
-//        switch (number) {
-//            case ZERO:
-//                scoreImgV.setViewport(new Rectangle2D(111, 646 + 320 - height, 52, height));
-//                break;
-//            case ONE:
-//                scoreImgV.setViewport(new Rectangle2D(168, 646, 52, height));
-//                break;
-//            case TWO:
-//                scoreImgV.setViewport(new Rectangle2D(168, 646, 52, height));
-//                break;
-//            case TREE:
-//                scoreImgV.setViewport(new Rectangle2D(168, 646, 52, height));
-//                break;
-//            case FOUR:
-//                scoreImgV.setViewport(new Rectangle2D(168, 646, 52, height));
-//                break;
-//            case FIVE:
-//                scoreImgV.setViewport(new Rectangle2D(168, 646, 52, height));
-//                break;
-//            case SIX:
-//                scoreImgV.setViewport(new Rectangle2D(168, 646, 52, height));
-//                break;
-//            case SEVEN:
-//                scoreImgV.setViewport(new Rectangle2D(168, 646, 52, height));
-//                break;
-//            case EIGHT:
-//                scoreImgV.setViewport(new Rectangle2D(168, 646, 52, height));
-//                break;
-//            case NINE:
-//                scoreImgV.setViewport(new Rectangle2D(168, 646, 52, height));
-//                break;
-//        }
+    public void showNumber(String score) {
+
+            switch (score) {
+                case "0":
+                    scoreImgV.setViewport(new Rectangle2D(WIDTH*0, 0, WIDTH, HEIGHT));
+                    break;
+                case "1":
+                    scoreImgV.setViewport(new Rectangle2D(WIDTH*1, 0, WIDTH, HEIGHT));
+                    break;
+                case "2":
+                    scoreImgV.setViewport(new Rectangle2D(WIDTH*2, 0, WIDTH, HEIGHT));
+                    break;
+                case "3":
+                    scoreImgV.setViewport(new Rectangle2D(WIDTH*3, 0, WIDTH, HEIGHT));
+                    break;
+                case "4":
+                    scoreImgV.setViewport(new Rectangle2D(WIDTH*4, 0, WIDTH, HEIGHT));
+                    break;
+                case "5":
+                    scoreImgV.setViewport(new Rectangle2D(WIDTH*5, 0, WIDTH, HEIGHT));
+                    break;
+                case "6":
+                    scoreImgV.setViewport(new Rectangle2D(WIDTH*6, 0, WIDTH, HEIGHT));
+                    break;
+                case "7":
+                    scoreImgV.setViewport(new Rectangle2D(WIDTH*7, 0, WIDTH, HEIGHT));
+                    break;
+                case "8":
+                    scoreImgV.setViewport(new Rectangle2D(WIDTH*8, 0, WIDTH, HEIGHT));
+                    break;
+                case "9":
+                    scoreImgV.setViewport(new Rectangle2D(WIDTH*9, 0, WIDTH, HEIGHT));
+                    break;
+            }
     }
 }

@@ -26,11 +26,12 @@ public class Game extends Application {
 
     public static Music music;
 
-    public static ArrayList<Wall> walls = new ArrayList<Wall>();
+    public static ArrayList<Wall> walls = new ArrayList<>();
     Bird bird = new Bird();
     public static int score = 0;
     public static int wallCounter = 0;
     public Label scoreLabel = new Label("Score: " + score);
+    public static ScoreBar scoreBar;
 
     public Parent createContent(){
         ImageView background = new ImageView(backgroundImg);
@@ -48,7 +49,7 @@ public class Game extends Application {
         gameRoot.setPrefSize(600,550);
 
         for (int i = 0; i < 15; i++) {
-            int enter = (int)(Math.random()*150+80);    //80-230
+            int enter = (int)(Math.random()*150+110);    //80-230
 //            int height = new Random().nextInt(550-enter);
 //            int enter = 80;
             int height = 70;
@@ -72,10 +73,7 @@ public class Game extends Application {
         gameRoot.getChildren().addAll(bird);
         appRoot.getChildren().addAll(background, gameRoot, groundRoot);
 
-        Score score1 = new Score();
-        score1.setTranslateX((appRoot.getPrefWidth()-score1.WIDTH)/2);
-        score1.setTranslateY(60);
-        appRoot.getChildren().add(score1);
+        scoreBar = new ScoreBar();
 
 //        gameRoot.setBackground(new Background(ground.myBI));
 //
@@ -109,7 +107,7 @@ public class Game extends Application {
         Game.timer.stop();
 
         GameOver gameOver = new GameOver();
-        gameOver.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-gameOver.WIDTH)/2);
+        gameOver.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-GameOver.WIDTH)/2);
         gameOver.setTranslateY(bird.velocity.getY()+200);
         Game.appRoot.getChildren().add(gameOver);
 
