@@ -3,13 +3,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-public class Score extends Pane {
+public class Number extends Pane {
     Image scoreImg;
     ImageView scoreImgV;
     static final double WIDTH = 28;
     static final double HEIGHT = 36;
 
-    public Score() {                                                             //общее изображение
+    public Number() {                                                             //общее изображение
         scoreImg = new Image(getClass().getResourceAsStream("ScoreNumbers.png"));
         scoreImgV = new ImageView(scoreImg);
         scoreImgV.setViewport(new Rectangle2D(0, 0, WIDTH, HEIGHT));

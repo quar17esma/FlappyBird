@@ -30,7 +30,7 @@ public class Game extends Application {
     Bird bird = new Bird();
     public static int score = 0;
     public static int wallCounter = 0;
-    public Label scoreLabel = new Label("Score: " + score);
+    public Label scoreLabel = new Label("Number: " + score);
     public static ScoreBar scoreBar;
 
     public Parent createContent(){
@@ -90,7 +90,7 @@ public class Game extends Application {
 
             bird.moveX((int) bird.velocity.getX());
             bird.moveY((int) bird.velocity.getY());
-            scoreLabel.setText("Score: " + score);
+            scoreLabel.setText("Number: " + score);
 
             bird.translateXProperty().addListener((ov, oldValue, newValue) -> {
                 int offset = newValue.intValue();
