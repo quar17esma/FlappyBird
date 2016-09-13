@@ -10,13 +10,13 @@ public class ScoreBar {
         score2 = new Score();
         score3 = new Score();
 
-        score1.setTranslateX((Game.appRoot.getPrefWidth()-Score.WIDTH)/2);
+        score1.setTranslateX((Game.appRoot.getPrefWidth()-Score.WIDTH)/2+28);
         score1.setTranslateY(60);
         Game.appRoot.getChildren().add(score1);
-        score2.setTranslateX((Game.appRoot.getPrefWidth()-Score.WIDTH)/2-28);
+        score2.setTranslateX((Game.appRoot.getPrefWidth()-Score.WIDTH)/2);
         score2.setTranslateY(60);
         Game.appRoot.getChildren().add(score2);
-        score3.setTranslateX((Game.appRoot.getPrefWidth()-Score.WIDTH)/2-28*2);
+        score3.setTranslateX((Game.appRoot.getPrefWidth()-Score.WIDTH)/2-28);
         score3.setTranslateY(60);
         Game.appRoot.getChildren().add(score3);
 
@@ -26,16 +26,18 @@ public class ScoreBar {
     }
 
     public void showScore(int score){
-        String scoreString = "000";
-        if (score<10){
-            scoreString = "00" + score;
+        if (score>=0&&score<1000) {
+            String scoreString = "000";
+            if (score < 10) {
+                scoreString = "00" + score;
+            }
+            if (score < 100 && score >= 10) {
+                scoreString = "0" + score;
+            }
+            scoreStr = scoreString.split("");
+            score1.showNumber(scoreStr[2]);
+            score2.showNumber(scoreStr[1]);
+            score3.showNumber(scoreStr[0]);
         }
-        if (score<100&&score>=10){
-            scoreString = "0" + score;
-        }
-        scoreStr = scoreString.split("");
-        score1.showNumber(scoreStr[2]);
-        score2.showNumber(scoreStr[1]);
-        score3.showNumber(scoreStr[0]);
     }
 }
