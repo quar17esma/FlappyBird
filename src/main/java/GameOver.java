@@ -11,7 +11,6 @@ public class GameOver extends Pane {
     static final double HEIGHT = 42*1.5;
 
 
-
     public GameOver() {                                                             //общее изображение
         gameOverImg = new Image(getClass().getResourceAsStream("Atlas.png"));
         gameOverImgV = new ImageView(gameOverImg);                                  //стена

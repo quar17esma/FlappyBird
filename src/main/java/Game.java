@@ -1,10 +1,12 @@
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -32,6 +34,7 @@ public class Game extends Application {
     public static int wallCounter = 0;
     public Label scoreLabel = new Label("Number: " + score);
     public static ScoreBar scoreBar;
+    Scene mainScene;
 
     public Parent createContent(){
         ImageView background = new ImageView(backgroundImg);
@@ -108,8 +111,27 @@ public class Game extends Application {
 
         GameOver gameOver = new GameOver();
         gameOver.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-GameOver.WIDTH)/2);
-        gameOver.setTranslateY(bird.velocity.getY()+200);
+        gameOver.setTranslateY(bird.velocity.getY()+130);
         Game.appRoot.getChildren().add(gameOver);
+
+        ScoreBoard scoreBoard = new ScoreBoard();
+        scoreBoard.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-ScoreBoard.WIDTH)/2);
+        scoreBoard.setTranslateY(bird.velocity.getY()+230);
+        Game.appRoot.getChildren().add(scoreBoard);
+
+        PlayButton playButton = new PlayButton();
+        playButton.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-PlayButton.WIDTH)/2);
+        playButton.setTranslateY(bird.velocity.getY()+360);
+        Game.appRoot.getChildren().add(playButton);
+        playButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            mainScene = new Scene(createContent());
+            mainScene.setOnMouseClicked(event1->{
+                bird.jump();
+                bird.animation.play();
+            });
+            timer.start();
+            music.musicBackgroundPlay();
+        });
 
         Game.music.musicBackgroundStop();
         Game.music.gameOverSound();
@@ -117,13 +139,13 @@ public class Game extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(createContent());
-        scene.setOnMouseClicked(event->{
+        mainScene = new Scene(createContent());
+        mainScene.setOnMouseClicked(event->{
             bird.jump();
             bird.animation.play();
         });
 
-        primaryStage.setScene(scene);
+        primaryStage.setScene(mainScene);
         primaryStage.show();
 
         timer = new AnimationTimer() {
