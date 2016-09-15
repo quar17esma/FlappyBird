@@ -1,6 +1,7 @@
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -8,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -16,28 +18,34 @@ import java.util.ArrayList;
  * Created by Сергей on 04.08.2016.
  */
 public class Game extends Application {
-    static AnimationTimer timer;
+    AnimationTimer timer;
 
     Image backgroundImg = new Image(getClass().getResourceAsStream("background.png"));
 
-    public static Pane appRoot = new Pane();
-    public static Pane gameRoot = new Pane();
-    public static Pane groundRoot = new Pane();
+    public Pane appRoot;
+    public Pane gameRoot;
+    public Pane groundRoot;
 
     Ground ground;
 
-    public static Music music;
+    public Music music;
 
-    public static ArrayList<Wall> walls = new ArrayList<>();
+    public ArrayList<Wall> walls = new ArrayList<>();
     Bird bird = new Bird();
-    public static int score = 0;
-    public static int wallCounter = 0;
+    public int score = 0;
+    public int wallCounter = 0;
     public Label scoreLabel = new Label("Number: " + score);
-    public static ScoreBar scoreBar;
+    public ScoreBar scoreBar;
     Scene mainScene;
+    ImageView background;
+    Stage primaryStage;
 
     public Parent createContent(){
-        ImageView background = new ImageView(backgroundImg);
+        appRoot = new Pane();
+        gameRoot = new Pane();
+        groundRoot = new Pane();
+
+        background = new ImageView(backgroundImg);
         background.setFitWidth(600);
         background.setFitHeight(550);
 
@@ -46,6 +54,7 @@ public class Game extends Application {
 
         appRoot.setPrefSize(600,550);
         appRoot.setMaxSize(600,550);
+
 
         groundRoot.setPrefSize(15*350+600,550);
 
@@ -73,10 +82,21 @@ public class Game extends Application {
 
         groundRoot.setBackground(new Background(ground.myBI));
 //        groundRoot.getChildren().add(gameRoot);
-        gameRoot.getChildren().addAll(bird);
-        appRoot.getChildren().addAll(background, gameRoot, groundRoot);
+        if (!gameRoot.getChildren().contains(bird)){
+            gameRoot.getChildren().addAll(bird);
+        }
+        if (!appRoot.getChildren().contains(background)){
+            appRoot.getChildren().add(background);
+        }
+        if (!appRoot.getChildren().contains(gameRoot)){
+            appRoot.getChildren().add(gameRoot);
+        }
+        if (!appRoot.getChildren().contains(groundRoot)){
+            appRoot.getChildren().add(groundRoot);
+        }
 
-        scoreBar = new ScoreBar();
+
+        scoreBar = new ScoreBar(appRoot);
 
 //        gameRoot.setBackground(new Background(ground.myBI));
 //
@@ -91,8 +111,8 @@ public class Game extends Application {
             if (bird.velocity.getY() < 5)
                 bird.velocity = bird.velocity.add(0, 1);
 
-            bird.moveX((int) bird.velocity.getX());
-            bird.moveY((int) bird.velocity.getY());
+            bird.moveX((int) bird.velocity.getX(), walls, wallCounter, score, scoreBar);
+            bird.moveY((int) bird.velocity.getY(), walls);
             scoreLabel.setText("Number: " + score);
 
             bird.translateXProperty().addListener((ov, oldValue, newValue) -> {
@@ -107,41 +127,77 @@ public class Game extends Application {
     }
 
     public void gameOver(){
-        Game.timer.stop();
+        timer.stop();
 
         GameOver gameOver = new GameOver();
-        gameOver.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-GameOver.WIDTH)/2);
+        gameOver.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-GameOver.WIDTH)/2);
         gameOver.setTranslateY(bird.velocity.getY()+130);
-        Game.appRoot.getChildren().add(gameOver);
+        appRoot.getChildren().add(gameOver);
 
         ScoreBoard scoreBoard = new ScoreBoard();
-        scoreBoard.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-ScoreBoard.WIDTH)/2);
+        scoreBoard.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-ScoreBoard.WIDTH)/2);
         scoreBoard.setTranslateY(bird.velocity.getY()+230);
-        Game.appRoot.getChildren().add(scoreBoard);
+        appRoot.getChildren().add(scoreBoard);
 
         PlayButton playButton = new PlayButton();
-        playButton.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-PlayButton.WIDTH)/2);
+        playButton.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-PlayButton.WIDTH)/2);
         playButton.setTranslateY(bird.velocity.getY()+360);
-        Game.appRoot.getChildren().add(playButton);
+        appRoot.getChildren().add(playButton);
         playButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+//            mainScene = null;
+
+
+            score = 0;
+            bird.setVelocity(new Point2D(0,0));
+            bird.setTranslateX(100);
+            bird.setTranslateY(300);
+            bird.getTransforms().add(new Rotate(270,0,0));
+            bird.isAlive = true;
+
+            gameRoot.setLayoutX(-100);
+            groundRoot.setLayoutX(-100);
+
             mainScene = new Scene(createContent());
             mainScene.setOnMouseClicked(event1->{
-                bird.jump();
+                bird.jump(music);
                 bird.animation.play();
             });
+            primaryStage.setScene(mainScene);
+//            Stage stage = new Stage();
+//            Scene scene = new Scene(createContent());
+//                scene.setOnMouseClicked(event1->{
+//                bird.jump(music);
+//                bird.animation.play();
+//            });
+//            stage.setScene(scene);
+//            stage.show();
+
+
             timer.start();
             music.musicBackgroundPlay();
+
+//            score = 0;
+//            bird.setVelocity(new Point2D(0,0));
+//            bird.isAlive = true;
+//
+//            gameRoot.setLayoutX(0);
+//            groundRoot.setLayoutX(0);
+//
+//
+//            timer.start();
+//            music.musicBackgroundPlay();
         });
 
-        Game.music.musicBackgroundStop();
-        Game.music.gameOverSound();
+        music.musicBackgroundStop();
+        music.gameOverSound();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
         mainScene = new Scene(createContent());
         mainScene.setOnMouseClicked(event->{
-            bird.jump();
+            bird.jump(music);
             bird.animation.play();
         });
 

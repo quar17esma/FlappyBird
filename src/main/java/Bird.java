@@ -6,6 +6,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 
 public class Bird extends Pane {
     Image BirdImg = new Image(getClass().getResourceAsStream("Bird.png"));  //Картинка Птички
@@ -40,9 +42,9 @@ public class Bird extends Pane {
         setTranslateY(300);
     }
 
-    public void moveX(int value){
+    public void moveX(int value, ArrayList<Wall> walls, int wallCounter, int score, ScoreBar scoreBar){
         for (int i = 0; i < value; i++) {
-            for (Wall wall: Game.walls) {
+            for (Wall wall: walls) {
                 if (getBoundsInParent().intersects(wall.getBoundsInParent())){
                     if (getTranslateX()+34 == wall.getTranslateX()) {
                         setTranslateX(getTranslateX()-1);
@@ -51,10 +53,10 @@ public class Bird extends Pane {
                     }
                 }
                 if (getTranslateX()+34 == wall.getTranslateX()){
-                    Game.wallCounter++;
-                    if (Game.wallCounter%2==0){
-                        Game.score++;
-                        Game.scoreBar.showScore(Game.score);
+                    wallCounter++;
+                    if (wallCounter%2==0){
+                        score++;
+                        scoreBar.showScore(score);
                     }
                 }
 
@@ -63,11 +65,11 @@ public class Bird extends Pane {
         }
     }
 
-    public void moveY(int value){
+    public void moveY(int value, ArrayList<Wall> walls){
         boolean moveDown = value > 0;
 
         for (int i = 0; i < Math.abs(value); i++) {
-            for (Wall wall:Game.walls) {
+            for (Wall wall:walls) {
                 if (this.getBoundsInParent().intersects(wall.getBoundsInParent())){
                     if (moveDown){
                         setTranslateY(getTranslateY()-1);
@@ -88,14 +90,18 @@ public class Bird extends Pane {
         }
     }
 
-    public void jump(){
+    public void jump(Music music){
         velocity = new Point2D(3, -9);
-        Game.music.jumpSound();
+        music.jumpSound();
     }
 
     public void die(){
         getTransforms().add(new Rotate(90,0,0));
         setTranslateY(550-112+20-34-1);
         isAlive = false;
+    }
+
+    public void setVelocity(Point2D velocity) {
+        this.velocity = velocity;
     }
 }

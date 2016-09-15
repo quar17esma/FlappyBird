@@ -44,9 +44,7 @@ public class Music {
                 getClass().getResourceAsStream("jump.wav"));
         clipJump.open(inputStream);
         clipJump.start();
-    } catch (Exception e){
-            e.printStackTrace();
-        }
+    } catch (Exception e){e.printStackTrace();}
     }
 
     public void gameOverSound(){
@@ -56,9 +54,7 @@ public class Music {
                     getClass().getResourceAsStream("MarioDie.wav"));
             clipJump.open(inputStream);
             clipJump.start();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        } catch (Exception e){e.printStackTrace();}
     }
 
 

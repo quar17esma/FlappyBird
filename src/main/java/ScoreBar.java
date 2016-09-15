@@ -1,3 +1,4 @@
+import javafx.scene.layout.Pane;
 
 public class ScoreBar {
     Number number1;
@@ -5,20 +6,20 @@ public class ScoreBar {
     Number number3;
     String[] scoreStr = new String[3];
 
-    ScoreBar(){
+    ScoreBar(Pane appRoot){
         number1 = new Number();
         number2 = new Number();
         number3 = new Number();
 
-        number1.setTranslateX((Game.appRoot.getPrefWidth()- Number.WIDTH)/2+28);
+        number1.setTranslateX((appRoot.getPrefWidth()- Number.WIDTH)/2+28);
         number1.setTranslateY(60);
-        Game.appRoot.getChildren().add(number1);
-        number2.setTranslateX((Game.appRoot.getPrefWidth()- Number.WIDTH)/2);
+        appRoot.getChildren().add(number1);
+        number2.setTranslateX((appRoot.getPrefWidth()- Number.WIDTH)/2);
         number2.setTranslateY(60);
-        Game.appRoot.getChildren().add(number2);
-        number3.setTranslateX((Game.appRoot.getPrefWidth()- Number.WIDTH)/2-28);
+        appRoot.getChildren().add(number2);
+        number3.setTranslateX((appRoot.getPrefWidth()- Number.WIDTH)/2-28);
         number3.setTranslateY(60);
-        Game.appRoot.getChildren().add(number3);
+        appRoot.getChildren().add(number3);
 
         scoreStr[0] = "0";
         scoreStr[1] = "0";
