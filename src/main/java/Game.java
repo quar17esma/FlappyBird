@@ -1,8 +1,6 @@
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -10,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -21,7 +18,7 @@ import java.util.ArrayList;
 public class Game extends Application {
     AnimationTimer timer;
 
-    Image backgroundImg = new Image(getClass().getResourceAsStream("background.png"));
+    Image backgroundImg = new Image(getClass().getResourceAsStream("images/background.png"));
 
     public Pane appRoot;
     public Pane gameRoot;

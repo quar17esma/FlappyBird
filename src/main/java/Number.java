@@ -10,7 +10,7 @@ public class Number extends Pane {
     static final double HEIGHT = 36;
 
     public Number() {                                                             //общее изображение
-        scoreImg = new Image(getClass().getResourceAsStream("ScoreNumbers.png"));
+        scoreImg = new Image(getClass().getResourceAsStream("images/ScoreNumbers.png"));
         scoreImgV = new ImageView(scoreImg);
         scoreImgV.setViewport(new Rectangle2D(0, 0, WIDTH, HEIGHT));
 

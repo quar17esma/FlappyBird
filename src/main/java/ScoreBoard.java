@@ -12,7 +12,7 @@ public class ScoreBoard  extends Pane {
 
 
     public ScoreBoard() {                                                             //общее изображение
-        scoreBoardImg = new Image(getClass().getResourceAsStream("ScoreBoard.png"));
+        scoreBoardImg = new Image(getClass().getResourceAsStream("images/ScoreBoard.png"));
         scoreBoardImgV = new ImageView(scoreBoardImg);
         scoreBoardImgV.setViewport(new Rectangle2D(0,0,229,118));
 

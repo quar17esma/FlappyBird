@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 
 public class Bird extends Pane {
-    Image BirdImg = new Image(getClass().getResourceAsStream("Bird.png"));  //Картинка Птички
+    Image BirdImg = new Image(getClass().getResourceAsStream("images/Bird.png"));  //Картинка Птички
     ImageView imageView = new ImageView(BirdImg);
 
     int count = 3;                                          //кол-во кадров

@@ -1,12 +1,6 @@
-import sun.audio.AudioData;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-import sun.audio.ContinuousAudioDataStream;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.*;
 
 
 public class Music {
@@ -20,7 +14,7 @@ public class Music {
                 try {
                     clipBG = AudioSystem.getClip();
                     AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                            getClass().getResourceAsStream("ThemeBackground.wav"));
+                            getClass().getResourceAsStream("sounds/ThemeBackground.wav"));
                     clipBG.open(inputStream);
                     clipBG.loop(Clip.LOOP_CONTINUOUSLY);
                     clipBG.start();
@@ -41,7 +35,7 @@ public class Music {
         try{
         Clip clipJump = AudioSystem.getClip();
         AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                getClass().getResourceAsStream("jump.wav"));
+                getClass().getResourceAsStream("sounds/jump.wav"));
         clipJump.open(inputStream);
         clipJump.start();
     } catch (Exception e){e.printStackTrace();}
@@ -51,7 +45,7 @@ public class Music {
         try{
             Clip clipJump = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                    getClass().getResourceAsStream("MarioDie.wav"));
+                    getClass().getResourceAsStream("sounds/MarioDie.wav"));
             clipJump.open(inputStream);
             clipJump.start();
         } catch (Exception e){e.printStackTrace();}

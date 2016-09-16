@@ -12,7 +12,7 @@ public class GameOver extends Pane {
 
 
     public GameOver() {                                                             //общее изображение
-        gameOverImg = new Image(getClass().getResourceAsStream("Atlas.png"));
+        gameOverImg = new Image(getClass().getResourceAsStream("images/Atlas.png"));
         gameOverImgV = new ImageView(gameOverImg);                                  //стена
         gameOverImgV.setViewport(new Rectangle2D(790,118,192,42));
 

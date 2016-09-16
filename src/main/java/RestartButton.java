@@ -11,7 +11,7 @@ public class RestartButton extends Pane{
 
 
     public RestartButton() {                                                             //общее изображение
-        restartButtonImg = new Image(getClass().getResourceAsStream("RestartButton.png"));
+        restartButtonImg = new Image(getClass().getResourceAsStream("images/RestartButton.png"));
         restartButtonImgV = new ImageView(restartButtonImg);
         restartButtonImgV.setViewport(new Rectangle2D(0,0,106,60));
 

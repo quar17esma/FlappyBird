@@ -1,4 +1,3 @@
-import javafx.geometry.Rectangle2D;
 import javafx.geometry.Side;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,12 +17,12 @@ public class Ground extends Pane{
 
 
                                                                 //общее изображение
-    Image groundImg = new Image(getClass().getResourceAsStream("Atlas.png"));
+    Image groundImg = new Image(getClass().getResourceAsStream("images/Atlas.png"));
     ImageView ground;
 
     public Ground() {
                 myBI = new BackgroundImage(
-            new Image(getClass().getResourceAsStream("ground.png"), 324, height, false, true),
+            new Image(getClass().getResourceAsStream("images/ground.png"), 324, height, false, true),
             BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT,
             new BackgroundPosition(Side.LEFT,0,true,Side.BOTTOM,0,true),
 //                        BackgroundPosition.DEFAULT,

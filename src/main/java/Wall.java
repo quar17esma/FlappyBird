@@ -2,12 +2,11 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 
 
 public class Wall extends Pane {
                                                                     //общее изображение
-    Image wallImg = new Image(getClass().getResourceAsStream("Atlas.png"));
+    Image wallImg = new Image(getClass().getResourceAsStream("images/Atlas.png"));
     ImageView wall;                                                //стена
 
     public enum WallType {                                         //типы стен
