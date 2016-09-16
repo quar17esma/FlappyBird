@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 /**
- * Created by Сергей on 04.08.2016.
+ * Created by Quar17esma on 04.08.2016.
  */
 public class Game extends Application {
     AnimationTimer timer;
@@ -33,8 +33,8 @@ public class Game extends Application {
 
     public ArrayList<Wall> walls = new ArrayList<>();
     Bird bird = new Bird();
-    public int score = 0;
-    public int wallCounter = 0;
+    public static int score = 0;
+    public static int wallCounter = 0;
     public Label scoreLabel = new Label("Number: " + score);
     public ScoreBar scoreBar;
     Scene mainScene;
@@ -82,27 +82,13 @@ public class Game extends Application {
         }
 
         groundRoot.setBackground(new Background(ground.myBI));
-//        groundRoot.getChildren().add(gameRoot);
-        if (!gameRoot.getChildren().contains(bird)){
-            gameRoot.getChildren().addAll(bird);
-        }
-        if (!appRoot.getChildren().contains(background)){
-            appRoot.getChildren().add(background);
-        }
-        if (!appRoot.getChildren().contains(gameRoot)){
-            appRoot.getChildren().add(gameRoot);
-        }
-        if (!appRoot.getChildren().contains(groundRoot)){
-            appRoot.getChildren().add(groundRoot);
-        }
 
+        gameRoot.getChildren().addAll(bird);
+        appRoot.getChildren().addAll(background, gameRoot, groundRoot);
 
         scoreBar = new ScoreBar(appRoot);
 
-//        gameRoot.setBackground(new Background(ground.myBI));
-//
-//        gameRoot.getChildren().add(bird);
-//        appRoot.getChildren().addAll(background, gameRoot, ground);
+
         return appRoot;
     }
 
@@ -112,7 +98,7 @@ public class Game extends Application {
             if (bird.velocity.getY() < 5)
                 bird.velocity = bird.velocity.add(0, 1);
 
-            bird.moveX((int) bird.velocity.getX(), walls, wallCounter, score, scoreBar);
+            bird.moveX((int) bird.velocity.getX(), walls, scoreBar);
             bird.moveY((int) bird.velocity.getY(), walls);
             scoreLabel.setText("Number: " + score);
 
@@ -140,11 +126,14 @@ public class Game extends Application {
         scoreBoard.setTranslateY(bird.velocity.getY()+230);
         appRoot.getChildren().add(scoreBoard);
 
-        PlayButton playButton = new PlayButton();
-        playButton.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-PlayButton.WIDTH)/2);
+        RestartButton playButton = new RestartButton();
+        playButton.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-RestartButton.WIDTH)/2);
         playButton.setTranslateY(bird.velocity.getY()+360);
         appRoot.getChildren().add(playButton);
         playButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+
+            Game.score = 0;
+            Game.wallCounter = 0;
 
             primaryStage.close();
             Platform.runLater(() -> {

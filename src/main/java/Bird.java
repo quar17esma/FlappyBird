@@ -42,7 +42,7 @@ public class Bird extends Pane {
         setTranslateY(300);
     }
 
-    public void moveX(int value, ArrayList<Wall> walls, int wallCounter, int score, ScoreBar scoreBar){
+    public void moveX(int value, ArrayList<Wall> walls, ScoreBar scoreBar){
         for (int i = 0; i < value; i++) {
             for (Wall wall: walls) {
                 if (getBoundsInParent().intersects(wall.getBoundsInParent())){
@@ -53,10 +53,10 @@ public class Bird extends Pane {
                     }
                 }
                 if (getTranslateX()+34 == wall.getTranslateX()){
-                    wallCounter++;
-                    if (wallCounter%2==0){
-                        score++;
-                        scoreBar.showScore(score);
+                    Game.wallCounter++;
+                    if (Game.wallCounter%2==0){
+                        Game.score++;
+                        scoreBar.showScore(Game.score);
                     }
                 }
 
