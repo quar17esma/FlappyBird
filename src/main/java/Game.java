@@ -1,5 +1,6 @@
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
@@ -144,48 +145,13 @@ public class Game extends Application {
         playButton.setTranslateY(bird.velocity.getY()+360);
         appRoot.getChildren().add(playButton);
         playButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-//            mainScene = null;
 
-
-            score = 0;
-            bird.setVelocity(new Point2D(0,0));
-            bird.setTranslateX(100);
-            bird.setTranslateY(300);
-            bird.getTransforms().add(new Rotate(270,0,0));
-            bird.isAlive = true;
-
-            gameRoot.setLayoutX(-100);
-            groundRoot.setLayoutX(-100);
-
-            mainScene = new Scene(createContent());
-            mainScene.setOnMouseClicked(event1->{
-                bird.jump(music);
-                bird.animation.play();
+            primaryStage.close();
+            Platform.runLater(() -> {
+                try {
+                    new Game().start(new Stage());
+                } catch (Exception e) {e.printStackTrace();}
             });
-            primaryStage.setScene(mainScene);
-//            Stage stage = new Stage();
-//            Scene scene = new Scene(createContent());
-//                scene.setOnMouseClicked(event1->{
-//                bird.jump(music);
-//                bird.animation.play();
-//            });
-//            stage.setScene(scene);
-//            stage.show();
-
-
-            timer.start();
-            music.musicBackgroundPlay();
-
-//            score = 0;
-//            bird.setVelocity(new Point2D(0,0));
-//            bird.isAlive = true;
-//
-//            gameRoot.setLayoutX(0);
-//            groundRoot.setLayoutX(0);
-//
-//
-//            timer.start();
-//            music.musicBackgroundPlay();
         });
 
         music.musicBackgroundStop();
@@ -213,6 +179,8 @@ public class Game extends Application {
         timer.start();
 
         music.musicBackgroundPlay();
+
+
     }
 
     public static void main(String[] args) {
