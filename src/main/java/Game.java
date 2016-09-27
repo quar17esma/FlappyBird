@@ -118,7 +118,7 @@ public class Game extends Application {
         gameOver.setTranslateY(bird.velocity.getY()+130);
         appRoot.getChildren().add(gameOver);
 
-        ScoreBoard scoreBoard = new ScoreBoard();
+        ScoreBoard scoreBoard = new ScoreBoard(score);
         scoreBoard.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-ScoreBoard.WIDTH)/2);
         scoreBoard.setTranslateY(bird.velocity.getY()+230);
         appRoot.getChildren().add(scoreBoard);

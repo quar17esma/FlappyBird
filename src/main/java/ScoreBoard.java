@@ -9,9 +9,10 @@ public class ScoreBoard  extends Pane {
     ImageView scoreBoardImgV;
     static final double WIDTH = 229;
     static final double HEIGHT = 118;
+    ScoreBar scoreBar;
 
 
-    public ScoreBoard() {                                                             //общее изображение
+    public ScoreBoard(int score) {                                                             //общее изображение
         scoreBoardImg = new Image(getClass().getResourceAsStream("images/ScoreBoard.png"));
         scoreBoardImgV = new ImageView(scoreBoardImg);
         scoreBoardImgV.setViewport(new Rectangle2D(0,0,229,118));
@@ -20,5 +21,16 @@ public class ScoreBoard  extends Pane {
         scoreBoardImgV.setFitHeight(HEIGHT);
 
         getChildren().add(scoreBoardImgV);
+
+        scoreBar = new ScoreBar(this, 175,35);
+
+        scoreBar.number1.scoreImgV.setFitWidth(Number.WIDTH*0.5);
+        scoreBar.number1.scoreImgV.setFitHeight(Number.HEIGHT*0.5);
+        scoreBar.number2.scoreImgV.setFitWidth(Number.WIDTH*0.5);
+        scoreBar.number2.scoreImgV.setFitHeight(Number.HEIGHT*0.5);
+        scoreBar.number3.scoreImgV.setFitWidth(Number.WIDTH*0.5);
+        scoreBar.number3.scoreImgV.setFitHeight(Number.HEIGHT*0.5);
+
+        scoreBar.showScore(score);
     }
 }
