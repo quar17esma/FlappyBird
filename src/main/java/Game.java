@@ -16,27 +16,25 @@ import java.util.ArrayList;
  * Created by Quar17esma on 04.08.2016.
  */
 public class Game extends Application {
-    AnimationTimer timer;
+    public AnimationTimer timer;
 
-    Image backgroundImg = new Image(getClass().getResourceAsStream("images/background.png"));
+    public Image backgroundImg = new Image(getClass().getResourceAsStream("images/background.png"));
 
     public Pane appRoot;
     public Pane gameRoot;
     public Pane groundRoot;
-
-    Ground ground;
-
+    public Ground ground;
     public Music music;
 
     public ArrayList<Wall> walls = new ArrayList<>();
-    Bird bird = new Bird();
+    public Bird bird = new Bird();
     public static int score = 0;
     public static int wallCounter = 0;
     public Label scoreLabel = new Label("Number: " + score);
     public ScoreBar scoreBar;
-    Scene mainScene;
-    ImageView background;
-    Stage primaryStage;
+    public Scene mainScene;
+    public ImageView background;
+    public Stage primaryStage;
 
     public Parent createContent(){
         appRoot = new Pane();

@@ -10,6 +10,8 @@ public class ScoreBoard  extends Pane {
     static final double WIDTH = 229;
     static final double HEIGHT = 118;
     ScoreBar scoreBar;
+    ScoreBar highScoreBar;
+    HighScoreManager highScoreManager = new HighScoreManager();
 
 
     public ScoreBoard(int score) {                                                             //общее изображение
@@ -32,5 +34,23 @@ public class ScoreBoard  extends Pane {
         scoreBar.number3.scoreImgV.setFitHeight(Number.HEIGHT*0.5);
 
         scoreBar.showScore(score);
+
+        highScoreBar= new ScoreBar(this, 175,75);
+
+        highScoreBar.number1.scoreImgV.setFitWidth(Number.WIDTH*0.5);
+        highScoreBar.number1.scoreImgV.setFitHeight(Number.HEIGHT*0.5);
+        highScoreBar.number2.scoreImgV.setFitWidth(Number.WIDTH*0.5);
+        highScoreBar.number2.scoreImgV.setFitHeight(Number.HEIGHT*0.5);
+        highScoreBar.number3.scoreImgV.setFitWidth(Number.WIDTH*0.5);
+        highScoreBar.number3.scoreImgV.setFitHeight(Number.HEIGHT*0.5);
+
+        highScoreManager.createFile();
+        highScoreManager.loadScoreFile();
+        highScoreBar.showScore(highScoreManager.highScore.getHighScore());
+
+        if (score> highScoreManager.highScore.getHighScore()){
+            highScoreManager.updateScoreFile(score);
+        }
+
     }
 }
