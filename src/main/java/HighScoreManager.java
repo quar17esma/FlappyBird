@@ -44,7 +44,7 @@ public class HighScoreManager {
 
     public void updateScoreFile(int score) {
         try {
-            outputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_FILE));
+            outputStream = new ObjectOutputStream(new FileOutputStream("src/main/resources/" + HIGHSCORE_FILE));
             highScore.setHighScore(score);
             outputStream.writeObject(highScore);
         } catch (FileNotFoundException e) {
