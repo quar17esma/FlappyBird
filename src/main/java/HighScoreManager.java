@@ -10,7 +10,7 @@ public class HighScoreManager {
 
     public void createFile(){
         scoreFile = new File("src/main/resources/" + HIGHSCORE_FILE);
-        System.out.println(scoreFile.getAbsolutePath());
+
         if (!scoreFile.exists()){
             try {
                 scoreFile.createNewFile();
