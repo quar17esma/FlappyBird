@@ -3,26 +3,26 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-
+//препятствие на пути птички
 public class Wall extends Pane {
-                                                                    //общее изображение
-    Image wallImg = new Image(getClass().getResourceAsStream("images/Atlas.png"));
-    ImageView wall;                                                //стена
 
-    public enum WallType {                                         //типы стен
+//файл с изображением препятствия
+    Image wallImg;
+    ImageView wall;
+    String WALL_IMAGE_FILE = "images/Atlas.png";
+
+//типы препятсвий(вверху, внизу)
+    public enum WallType {
         WALL_DOWN, WALL_UP
     }
 
-    public Wall(WallType wallType, int height) {               //конструктор блока
+//конструктор стены с параметрами(тип препятствия, высота препятствия)
+    public Wall(WallType wallType, int height) {
+        wallImg = new Image(getClass().getResourceAsStream(WALL_IMAGE_FILE));
         wall = new ImageView(wallImg);
 
-//        wall.setFitWidth(52);                         //размер блока
-//        wall.setFitHeight(height);
-
-//        setTranslateX(x);                                           //координаты блока
-//        setTranslateY(y);
-
-        switch (wallType) {                                        //изображение блока в зависимости от типа
+//устанавливаем изображение в зависимости от типа препятствия
+        switch (wallType) {
             case WALL_UP:
                 wall.setViewport(new Rectangle2D(111, 646+320-height, 52, height));
                 break;
@@ -30,6 +30,8 @@ public class Wall extends Pane {
                 wall.setViewport(new Rectangle2D(168, 646, 52, height));
                 break;
         }
-        getChildren().add(wall);    //добавляем блок на уровень
+
+//добавляем препятствие на уровень
+        getChildren().add(wall);
     }
 }

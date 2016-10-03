@@ -1,29 +1,33 @@
 import java.io.*;
 
+//класс управляет лучшим счетом
 public class HighScoreManager {
+
+//файл хранения лучшего счета
+    private static final String HIGHSCORE_FILE = "src/main/resources/high_score.dat";
+
     HighScore highScore = new HighScore();
-    private static final String HIGHSCORE_FILE = "high_score.dat";
-    File scoreFile;
-    ObjectOutputStream outputStream = null;
-    ObjectInputStream inputStream = null;
+    private File scoreFile;
+    private ObjectOutputStream outputStream = null;
+    private ObjectInputStream inputStream = null;
 
-
+//метод создает файл с лучшим счетом если он не создан
     public void createFile(){
-        scoreFile = new File("src/main/resources/" + HIGHSCORE_FILE);
+        scoreFile = new File(HIGHSCORE_FILE);
 
         if (!scoreFile.exists()){
             try {
                 scoreFile.createNewFile();
-                System.out.println(scoreFile.getAbsolutePath());
             } catch (IOException e) {
                 System.out.println("[Create] IO Error: " + e.getMessage());
             }
         }
     }
 
+//загружает лучший счет из файла
     public void loadScoreFile() {
         try {
-            inputStream = new ObjectInputStream(new FileInputStream("src/main/resources/" + HIGHSCORE_FILE));
+            inputStream = new ObjectInputStream(new FileInputStream(HIGHSCORE_FILE));
             highScore = (HighScore) inputStream.readObject();
         } catch (FileNotFoundException e) {
             System.out.println("[Load] FNF Error: " + e.getMessage());
@@ -42,9 +46,10 @@ public class HighScoreManager {
         }
     }
 
+//перезаписывает лучший счет в файл
     public void updateScoreFile(int score) {
         try {
-            outputStream = new ObjectOutputStream(new FileOutputStream("src/main/resources/" + HIGHSCORE_FILE));
+            outputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_FILE));
             highScore.setHighScore(score);
             outputStream.writeObject(highScore);
         } catch (FileNotFoundException e) {
@@ -62,6 +67,4 @@ public class HighScoreManager {
             }
         }
     }
-
-
 }

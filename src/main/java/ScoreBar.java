@@ -24,6 +24,7 @@ public class ScoreBar {
         scoreStr[1] = "0";
         scoreStr[2] = "0";
     }
+
     ScoreBar(Pane scoreBoard, int x, int y){
         number1 = new Number();
         number2 = new Number();
@@ -40,7 +41,7 @@ public class ScoreBar {
     }
 
     public void showScore(int score){
-        if (score>=0&&score<1000) {
+        if (score >= 0 && score < 1000) {
             String scoreString = "000";
             if (score < 10) {
                 scoreString = "00" + score;

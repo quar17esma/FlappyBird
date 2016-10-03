@@ -1,18 +1,21 @@
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+//Абстрактная медаль за рекорд
 public abstract class Medal extends Pane {
     Image medalImg;
     ImageView medalImgV;
+    String MEDAL_FILE = "images/Medal.png";
+
+//размер изображения медали
     static final double WIDTH = 44;
     static final double HEIGHT = 44;
 
-    public Medal() {                                                             //общее изображение
-        medalImg = new Image(getClass().getResourceAsStream("images/Medal.png"));
+//конструктор
+    public Medal() {
+        medalImg = new Image(getClass().getResourceAsStream(MEDAL_FILE));
         medalImgV = new ImageView(medalImg);
-
 
         medalImgV.setFitWidth(WIDTH);
         medalImgV.setFitHeight(HEIGHT);

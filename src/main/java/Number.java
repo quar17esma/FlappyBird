@@ -3,23 +3,32 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+//Класс отвечает за одну цифру в счете
 public class Number extends Pane {
-    Image scoreImg;
-    ImageView scoreImgV;
+
+    //файл с изображениями цифр
+    private static final String NUMBERS_FILE = "images/ScoreNumbers.png";
+
+    //размер изображения цифры
     static final double WIDTH = 28;
     static final double HEIGHT = 36;
 
-    public Number() {                                                             //общее изображение
-        scoreImg = new Image(getClass().getResourceAsStream("images/ScoreNumbers.png"));
+    Image scoreImg;
+    ImageView scoreImgV;
+
+    //устанавливливает изображение цифры и его размеры
+    public Number() {
+        scoreImg = new Image(getClass().getResourceAsStream(NUMBERS_FILE));
+
         scoreImgV = new ImageView(scoreImg);
         scoreImgV.setViewport(new Rectangle2D(0, 0, WIDTH, HEIGHT));
-
         scoreImgV.setFitWidth(WIDTH);
         scoreImgV.setFitHeight(HEIGHT);
 
         getChildren().add(scoreImgV);
     }
 
+    //устанавливает соответствующее изображение для цифры счета
     public void showNumber(String score) {
 
             switch (score) {

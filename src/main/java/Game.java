@@ -112,20 +112,21 @@ public class Game extends Application {
         timer.stop();
 
         GameOver gameOver = new GameOver();
-        gameOver.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-GameOver.WIDTH)/2);
+        gameOver.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-GameOver.getWIDTH())/2);
         gameOver.setTranslateY(bird.velocity.getY()+130);
         appRoot.getChildren().add(gameOver);
 
         ScoreBoard scoreBoard = new ScoreBoard(score);
-        scoreBoard.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-ScoreBoard.WIDTH)/2);
+        scoreBoard.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-ScoreBoard.getWIDTH())/2);
         scoreBoard.setTranslateY(bird.velocity.getY()+230);
         appRoot.getChildren().add(scoreBoard);
 
-        RestartButton playButton = new RestartButton();
-        playButton.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-RestartButton.WIDTH)/2);
-        playButton.setTranslateY(bird.velocity.getY()+360);
-        appRoot.getChildren().add(playButton);
-        playButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+        RestartButton restartButton = new RestartButton();
+        restartButton.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-RestartButton.getWIDTH())/2);
+        System.out.println(restartButton.getWidth());
+        restartButton.setTranslateY(bird.velocity.getY()+360);
+        appRoot.getChildren().add(restartButton);
+        restartButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
 
             Game.score = 0;
             Game.wallCounter = 0;

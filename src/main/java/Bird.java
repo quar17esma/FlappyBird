@@ -8,33 +8,41 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-
+//Птичка
 public class Bird extends Pane {
-    Image BirdImg = new Image(getClass().getResourceAsStream("images/Bird.png"));  //Картинка Птички
-    ImageView imageView = new ImageView(BirdImg);
-
-    int count = 3;                                          //кол-во кадров
-
-    int offsetX = 0;                                       //координаты первого кадра
+    //кол-во кадров анимации
+    private static final int COUNT = 3;
+    //размер кадра
+    private static final int WIDTH = 34;
+    private static final int HEIGHT = 24;
+    //файл изображений птички
+    private static final String BIRD_FILE = "images/Bird.png";
+    //координаты первого кадра
+    int offsetX = 0;
     int offsetY = 0;
+    //изображение птички
+    Image birdImg;
+    ImageView imageView;
 
-    int width = 34;                                         //размер кадра
-    int height = 24;
+    SpriteAnimation animation;
+    Point2D velocity;
 
-    public SpriteAnimation animation;
-
-    public Point2D velocity;
-
-    public boolean isAlive = true;
+    //состояние птички(жива или нет)
+    public boolean isAlive;
 
     public Bird() {
-        imageView.setFitHeight(24);                         //изменяем размер Птички
-        imageView.setFitWidth(34);
+        isAlive = true;
 
-        imageView.setViewport(new Rectangle2D(offsetX,offsetY,width,height));  //устанавливаем кадр
-        //создаем анимацию Марио
-        animation = new SpriteAnimation(this.imageView, Duration.millis(200),count,offsetX,offsetY,width,height);
-        getChildren().addAll(this.imageView);                                   //связываем картинку с персонажем Марио
+        birdImg = new Image(getClass().getResourceAsStream(BIRD_FILE));
+
+        imageView = new ImageView(birdImg);
+        imageView.setFitHeight(HEIGHT);
+        imageView.setFitWidth(WIDTH);
+        imageView.setViewport(new Rectangle2D(offsetX,offsetY, WIDTH, HEIGHT));
+
+        //создаем анимацию Птички
+        animation = new SpriteAnimation(this.imageView,Duration.millis(200),COUNT,offsetX,offsetY, WIDTH, HEIGHT);
+        getChildren().addAll(this.imageView);
 
 
         velocity  = new Point2D(0, 0);
@@ -42,9 +50,11 @@ public class Bird extends Pane {
         setTranslateY(300);
     }
 
+    //перемещает птичку по горизонтали
     public void moveX(int value, ArrayList<Wall> walls, ScoreBar scoreBar){
         for (int i = 0; i < value; i++) {
             for (Wall wall: walls) {
+                //при столкновении с препятствием - птичка упирается в него и умирает
                 if (getBoundsInParent().intersects(wall.getBoundsInParent())){
                     if (getTranslateX()+34 == wall.getTranslateX()) {
                         setTranslateX(getTranslateX()-1);
@@ -52,6 +62,7 @@ public class Bird extends Pane {
                         return;
                     }
                 }
+                //при прохождении препятствия - увеличиваем счет
                 if (getTranslateX()+34 == wall.getTranslateX()){
                     Game.wallCounter++;
                     if (Game.wallCounter%2==0){
@@ -59,13 +70,15 @@ public class Bird extends Pane {
                         scoreBar.showScore(Game.score);
                     }
                 }
-
             }
+            //перемещаем птичку вперед
             setTranslateX(getTranslateX()+1);
         }
     }
 
+    //перемещает птичку по вертикали
     public void moveY(int value, ArrayList<Wall> walls){
+        //положительная value указивает на перемещение птички вниз
         boolean moveDown = value > 0;
 
         for (int i = 0; i < Math.abs(value); i++) {
@@ -73,12 +86,11 @@ public class Bird extends Pane {
                 if (this.getBoundsInParent().intersects(wall.getBoundsInParent())){
                     if (moveDown){
                         setTranslateY(getTranslateY()-1);
-                        die();
-                        return;
                     } else {
                         setTranslateY(getTranslateY()+1);
-                        return;
                     }
+                    die();
+                    return;
                 }
             }
 

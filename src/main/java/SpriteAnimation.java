@@ -5,7 +5,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-
+//класс отвечает за анимацию птички
 public class SpriteAnimation  extends Transition{
     private final ImageView imageView;                      //изображение
     private final int count;                                //кол-во кадров
@@ -17,6 +17,8 @@ public class SpriteAnimation  extends Transition{
     private final int height;
 
     public SpriteAnimation(                                 //конструктор с параметрами и временем
+
+//параметры конструктора
        ImageView imageView,
        Duration duration,
        int count,
@@ -29,9 +31,11 @@ public class SpriteAnimation  extends Transition{
         this.offsetY = offsetY;
         this.width = width;
         this.height = height;
-        setCycleDuration(duration);                             //длительность одниго круга кадров
-        setCycleCount(Animation.INDEFINITE);                    //кол-во повторение анимации
-        setInterpolator(Interpolator.LINEAR);                   //скорость ровная
+                                                                //устанавливаем:
+        setCycleDuration(duration);                             //длительность одниго круга кадров,
+        setCycleCount(Animation.INDEFINITE);                    //кол-во повторений анимации,
+        setInterpolator(Interpolator.LINEAR);                   //скорость анимации (линейная),
+
                                                                 //указываем кадр на картинке(расположение и размер)
         this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
     }
@@ -44,7 +48,8 @@ public class SpriteAnimation  extends Transition{
     }         //смена колонки
 
 
-    protected void interpolate(double frac) {                   //вызывается при каждом кадре анимации (от 0.00 до 1.00)
+//изменяем изображение, вызывается при каждом кадре анимации (заначение параметра изменяется от 0.00 до 1.00)
+    protected void interpolate(double frac) {
         final int index = Math.min((int)Math.floor(count*frac), count-1);
         final int x = index*width+offsetX;            //столбец кадра (изменяется с изменением frac)
 
