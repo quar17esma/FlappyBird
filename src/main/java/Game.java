@@ -19,70 +19,60 @@ import java.util.Random;
  * Created by Quar17esma on 04.08.2016.
  */
 public class Game extends Application {
-    public AnimationTimer timer;
+    private AnimationTimer timer;
 
-    public Image backgroundImg = new Image(getClass().getResourceAsStream("images/background.png"));
+    private BackgroundImage backgroundImg;
 
-    public Pane appRoot;
-    public Pane gameRoot;
-    public Pane groundRoot;
-    public Ground ground;
-    public Music music;
+    Pane appRoot;
+    Pane gameRoot;
+    Pane groundRoot;
+    Ground ground;
+    Music music;
 
-    public ArrayList<Wall> walls = new ArrayList<>();
-    public Bird bird = new Bird();
-    public static int score = 0;
-    public static int wallCounter = 0;
-    public ScoreBar scoreBar;
-    public Scene mainScene;
-    public ImageView background;
-    public Stage primaryStage;
+    ArrayList<Wall> walls = new ArrayList<>();
+    Bird bird;
+    static int score = 0;
+    static int wallCounter = 0;
+    ScoreBar scoreBar;
+    Scene mainScene;
+    ImageView background;
+    Stage primaryStage;
     private static final double STAGE_WIDTH = 600;
     private static final double STAGE_HEIGHT = 550;
     private static final String BACKGROUND_FILE = "images/background.png";
 
-    public Parent createContent(){
+    private Parent createContent(){
+        //корневая панель
         appRoot = new Pane();
         appRoot.setPrefSize(STAGE_WIDTH,STAGE_HEIGHT);
         appRoot.setMaxSize(STAGE_WIDTH,STAGE_HEIGHT);
+        appRoot.setBackground(createMainBackground());
 
+        //игровая панель
         gameRoot = new Pane();
         gameRoot.setPrefSize(STAGE_WIDTH,STAGE_HEIGHT);
 
+        //земля
         groundRoot = new Pane();
         groundRoot.setPrefSize(Wall.getQUANTITY()*Wall.getGAP()+STAGE_WIDTH,STAGE_HEIGHT);
-
         ground = new Ground();
-
         groundRoot.setBackground(new Background(ground.myBI));
 
-        background = new ImageView(backgroundImg);
-        background.setFitWidth(STAGE_WIDTH);
-        background.setFitHeight(STAGE_HEIGHT);
-
-
+        //музыка
         music = new Music();
 
+        //препятствия
         createWalls();
 
+        //птичка
+        bird = new Bird();
         gameRoot.getChildren().add(bird);
-
-        //фон главной панели
-        BackgroundImage  backgroundImage = new BackgroundImage(
-                new Image(getClass().getResourceAsStream(BACKGROUND_FILE),
-                        STAGE_WIDTH,
-                        STAGE_HEIGHT,
-                        false,
-                        false),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                new BackgroundPosition(Side.LEFT,0,true,Side.TOP,0,true),
-                BackgroundSize.DEFAULT);
-        appRoot.setBackground(new Background(backgroundImage));
 
         appRoot.getChildren().addAll(gameRoot, groundRoot);
 
+        //текущий счет
         scoreBar = new ScoreBar(appRoot);
+        appRoot.getChildren().addAll(scoreBar.number1, scoreBar.number2, scoreBar.number3);
 
 
         return appRoot;
@@ -103,6 +93,7 @@ public class Game extends Application {
 
         //выводим табло счета
         ScoreBoard scoreBoard = new ScoreBoard(score);
+        scoreBoard.createScoreBoard();
         scoreBoard.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-ScoreBoard.getWIDTH())/2);
         scoreBoard.setTranslateY(230);
         appRoot.getChildren().add(scoreBoard);
@@ -112,8 +103,8 @@ public class Game extends Application {
         restartButton.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-RestartButton.getWIDTH())/2);
         restartButton.setTranslateY(360);
         restartButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            Game.score = 0;
-            Game.wallCounter = 0;
+            score = 0;
+            wallCounter = 0;
 
             primaryStage.close();
             Platform.runLater(() -> {
@@ -148,6 +139,23 @@ public class Game extends Application {
 
             gameRoot.getChildren().addAll(wallUp, wallDown);
         }
+    }
+
+    //создает и возвращает фон для корневой панели
+    public Background createMainBackground(){
+        //фон главной панели
+        backgroundImg = new BackgroundImage(
+                new Image(getClass().getResourceAsStream(BACKGROUND_FILE),
+                        STAGE_WIDTH,
+                        STAGE_HEIGHT,
+                        false,
+                        false),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                new BackgroundPosition(Side.LEFT,0,true,Side.TOP,0,true),
+                BackgroundSize.DEFAULT);
+
+        return new Background(backgroundImg);
     }
 
     public void update() {

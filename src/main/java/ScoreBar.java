@@ -18,8 +18,6 @@ public class ScoreBar {
         number3.setTranslateX((appRoot.getPrefWidth()- Number.WIDTH)/2-28);
         number3.setTranslateY(60);
 
-        appRoot.getChildren().addAll(number1, number2, number3);
-
         scoreStr[0] = "0";
         scoreStr[1] = "0";
         scoreStr[2] = "0";
@@ -36,8 +34,8 @@ public class ScoreBar {
         number2.setTranslateY(y);
         number3.setTranslateX(x-14);
         number3.setTranslateY(y);
-
-        scoreBoard.getChildren().addAll(number1, number2, number3);
+//
+//        scoreBoard.getChildren().addAll(number1, number2, number3);
     }
 
     public void showScore(int score){
