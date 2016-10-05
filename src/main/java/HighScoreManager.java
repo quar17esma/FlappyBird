@@ -3,15 +3,16 @@ import java.io.*;
 //класс управляет лучшим счетом
 public class HighScoreManager {
 
-//файл хранения лучшего счета
+    //файл хранения лучшего счета
     private static final String HIGHSCORE_FILE = "src/main/resources/high_score.dat";
 
-    HighScore highScore = new HighScore();
     private File scoreFile;
-    private ObjectOutputStream outputStream = null;
-    private ObjectInputStream inputStream = null;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
 
-//метод создает файл с лучшим счетом если он не создан
+    HighScore highScore;
+
+    //метод создает файл с лучшим счетом если он не создан
     public void createFile(){
         scoreFile = new File(HIGHSCORE_FILE);
 
@@ -24,7 +25,7 @@ public class HighScoreManager {
         }
     }
 
-//загружает лучший счет из файла
+    //загружает лучший счет из файла
     public void loadScoreFile() {
         try {
             inputStream = new ObjectInputStream(new FileInputStream(HIGHSCORE_FILE));
@@ -66,5 +67,9 @@ public class HighScoreManager {
                 System.out.println("[Update] Error: " + e.getMessage());
             }
         }
+    }
+
+    public HighScoreManager() {
+        highScore = new HighScore();
     }
 }

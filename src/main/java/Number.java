@@ -13,7 +13,7 @@ public class Number extends Pane {
     static final double WIDTH = 28;
     static final double HEIGHT = 36;
 
-    Image scoreImg;
+    private Image scoreImg;
     ImageView scoreImgV;
 
     //устанавливливает изображение цифры и его размеры

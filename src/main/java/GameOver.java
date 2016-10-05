@@ -2,6 +2,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 //Надпись об окончании игра (GAMEOVER)
 public class GameOver extends Pane {

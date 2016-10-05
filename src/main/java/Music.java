@@ -6,9 +6,9 @@ import javax.sound.sampled.Clip;
 public class Music {
     private static Thread backgroundMusic;
     private static Clip clipBG;
-    public static final String BACKGROUND_MUSIC_FILE = "sounds/ThemeBackground.wav";
-    public static final String JUMP_SOUND_FILE = "sounds/jump.wav";
-    public static final String GAMEOVER_SOUND_FILE = "sounds/MarioDie.wav";
+    private static final String BACKGROUND_MUSIC_FILE = "sounds/ThemeBackground.wav";
+    private static final String JUMP_SOUND_FILE = "sounds/jump.wav";
+    private static final String GAMEOVER_SOUND_FILE = "sounds/MarioDie.wav";
 
     //создает и запускает поток воспроизводящий фоновою музыку
     public synchronized void musicBackgroundPlay() {

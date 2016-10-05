@@ -11,8 +11,8 @@ public class RestartButton extends Pane{
     //файл изображения кнопки
     private static final String RESTART_BUTTON_FILE = "images/RestartButton.png";
 
-    Image restartButtonImg;
-    ImageView restartButtonImgV;
+    private Image restartButtonImg;
+    private ImageView restartButtonImgV;
 
 
     //устанавливает изображение и его размер

@@ -4,7 +4,7 @@ public class ScoreBar {
     Number number1;
     Number number2;
     Number number3;
-    String[] scoreStr = new String[3];
+    private String[] scoreStr = new String[3];
 
     ScoreBar(Pane appRoot){
         number1 = new Number();
@@ -50,6 +50,7 @@ public class ScoreBar {
                 scoreString = "0" + score;
             }
             scoreStr = scoreString.split("");
+
             number1.showNumber(scoreStr[2]);
             number2.showNumber(scoreStr[1]);
             number3.showNumber(scoreStr[0]);

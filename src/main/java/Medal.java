@@ -4,9 +4,9 @@ import javafx.scene.layout.Pane;
 
 //Абстрактная медаль за рекорд
 public abstract class Medal extends Pane {
-    Image medalImg;
+    private Image medalImg;
     ImageView medalImgV;
-    String MEDAL_FILE = "images/Medal.png";
+    private static final String MEDAL_FILE = "images/Medal.png";
 
 //размер изображения медали
     static final double WIDTH = 44;

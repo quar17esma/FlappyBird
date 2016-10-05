@@ -96,17 +96,22 @@ public class Bird extends Pane {
 
             if (getTranslateY()<0)
                 setTranslateX(0);
-            if (getTranslateY()>550-112+20-24-1)
-                setTranslateY(550-112+20-24-1);
+
+            if (getTranslateY()>Game.getStageHeight()-112+20-24-1){
+                setTranslateY(Game.getStageHeight()-112+20-24-1);
+                die();
+            }
             setTranslateY(getTranslateY() + (moveDown?1:-1));
         }
     }
 
+    //перещает птичку(прыжок), запускает звук взмаха крыла
     public void jump(Music music){
         velocity = new Point2D(3, -9);
         music.jumpSound();
     }
 
+    //убивает птичку
     public void die(){
         getTransforms().add(new Rotate(90,0,0));
         setTranslateY(550-112+20-34-1);

@@ -12,8 +12,8 @@ public class ScoreBoard extends Pane {
     //файл изображения табло
     private static final String SCOREBOARD_FILE = "images/ScoreBoard.png";
 
-    Image scoreBoardImg;
-    ImageView scoreBoardImgV;
+    private Image scoreBoardImg;
+    private ImageView scoreBoardImgV;
 
     //текущий счет
     ScoreBar scoreBar;
@@ -26,10 +26,9 @@ public class ScoreBoard extends Pane {
 
     public ScoreBoard(int score) {
         scoreBoardImg = new Image(getClass().getResourceAsStream(SCOREBOARD_FILE));
+
         scoreBoardImgV = new ImageView(scoreBoardImg);
-
         scoreBoardImgV.setViewport(new Rectangle2D(0, 0, 229, 118));
-
         scoreBoardImgV.setFitWidth(WIDTH);
         scoreBoardImgV.setFitHeight(HEIGHT);
 
