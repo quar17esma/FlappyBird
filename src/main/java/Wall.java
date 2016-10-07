@@ -9,12 +9,16 @@ public class Wall extends Pane {
     //файл с изображением препятствия
     private Image wallImg;
     private ImageView wall;
-    private static final String WALL_IMAGE_FILE = "images/Atlas.png";
+    private static final String WALL_IMAGE_FILE = "images/Walls.png";
 
     //расстояние между препятствиями
     private static final int GAP = 300;
+    //количество пар препятствий
     private static final int QUANTITY = 25;
-
+    //мин ширина прохода между вверхним и нижним препятствием
+    static final int ENTER_MIN = 80;
+    //мин высота препятствия
+    static final int WALL_HEIGHT_MIN = 30;
     //типы препятсвий(вверху, внизу)
     public enum WallType {
         WALL_DOWN, WALL_UP
@@ -28,10 +32,10 @@ public class Wall extends Pane {
         //устанавливаем изображение в зависимости от типа препятствия
         switch (wallType) {
             case WALL_UP:
-                wall.setViewport(new Rectangle2D(111, 646+320-height, 52, height));
+                wall.setViewport(new Rectangle2D(0, 0+435-height, 52, height));
                 break;
             case WALL_DOWN:
-                wall.setViewport(new Rectangle2D(168, 646, 52, height));
+                wall.setViewport(new Rectangle2D(59, 0, 52, height));
                 break;
         }
 

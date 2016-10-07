@@ -37,7 +37,6 @@ public class Bird extends Pane {
     public Bird() {
         isAlive = true;
 
-
         //изображение птички
         birdImg = new Image(getClass().getResourceAsStream(BIRD_FILE));
 
@@ -89,24 +88,27 @@ public class Bird extends Pane {
 
         for (int i = 0; i < Math.abs(value); i++) {
             for (Wall wall:walls) {
-                if (this.getBoundsInParent().intersects(wall.getBoundsInParent())){
+                if (getBoundsInParent().intersects(wall.getBoundsInParent())){
                     if (moveDown){
                         setTranslateY(getTranslateY()-1);
                     } else {
                         setTranslateY(getTranslateY()+1);
                     }
-                    die();
+                    die(wall);
+//                    die();
                     return;
                 }
             }
 
+
             if (getTranslateY()<0)
                 setTranslateY(0);
 
-            if (getTranslateY()>Game.getStageHeight()-112+20-HEIGHT-1){
-                setTranslateY(Game.getStageHeight()-112+20-HEIGHT-1);
+            if (getTranslateY()>Game.getStageHeight()-Ground.getHEIGHT()-HEIGHT){
+                setTranslateY(Game.getStageHeight()-Ground.getHEIGHT()-HEIGHT-1);
                 die();
             }
+
             setTranslateY(getTranslateY() + (moveDown?1:-1));
         }
     }
@@ -119,8 +121,19 @@ public class Bird extends Pane {
 
     //убивает птичку(птичка наклоняется и падает)
     public void die(){
-        getTransforms().add(new Rotate(90,0,0));
-        setTranslateY(Game.getStageHeight()-112+20-WIDTH-1);
         isAlive = false;
+        getTransforms().add(new Rotate(90,0,0));
+        setTranslateY(Game.getStageHeight()-Ground.getHEIGHT()-WIDTH-1);
+        animation.stop();
+    }
+    //убивает птичку(птичка наклоняется и падает)
+    public void die(Wall intersectedWall){
+        isAlive = false;
+        getTransforms().add(new Rotate(90,0,0));
+        setTranslateY(Game.getStageHeight()-Ground.getHEIGHT()-WIDTH-1);
+        while (getBoundsInParent().intersects(intersectedWall.getBoundsInParent())){
+            setTranslateX(getTranslateX()-1);
+        }
+        animation.stop();
     }
 }

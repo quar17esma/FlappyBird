@@ -23,7 +23,7 @@ public class ScoreBar {
         scoreStr[2] = "0";
     }
 
-    ScoreBar(Pane scoreBoard, int x, int y){
+    ScoreBar(int x, int y){
         number1 = new Number();
         number2 = new Number();
         number3 = new Number();
@@ -34,8 +34,6 @@ public class ScoreBar {
         number2.setTranslateY(y);
         number3.setTranslateX(x-14);
         number3.setTranslateY(y);
-//
-//        scoreBoard.getChildren().addAll(number1, number2, number3);
     }
 
     public void showScore(int score){

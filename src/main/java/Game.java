@@ -25,7 +25,6 @@ public class Game extends Application {
 
     Pane appRoot;
     Pane gameRoot;
-    Pane groundRoot;
 
     Ground ground;
     Music music;
@@ -53,27 +52,25 @@ public class Game extends Application {
         //игровая панель
         gameRoot = new Pane();
         gameRoot.setPrefSize(STAGE_WIDTH,STAGE_HEIGHT);
-
-        //земля
-        groundRoot = new Pane();
-        groundRoot.setPrefSize(Wall.getQUANTITY()*Wall.getGAP()+STAGE_WIDTH,STAGE_HEIGHT);
-        ground = new Ground();
-        groundRoot.setBackground(new Background(ground.myBI));
-
-        //музыка
-        music = new Music();
+        appRoot.getChildren().add(gameRoot);
 
         //препятствия
         createWalls();
+
+        //земля
+        ground = new Ground();
+        ground.setPrefSize(Wall.getQUANTITY()*Wall.getGAP()+STAGE_WIDTH, Ground.getHEIGHT());
+        gameRoot.getChildren().add(ground);
+
+        //музыка
+        music = new Music();
 
         //птичка
         bird = new Bird();
         gameRoot.getChildren().add(bird);
 
-        appRoot.getChildren().addAll(gameRoot, groundRoot);
-
         //текущий счет
-        scoreBar = new ScoreBar(appRoot);
+        scoreBar = new ScoreBar(gameRoot);
         appRoot.getChildren().addAll(scoreBar.number1, scoreBar.number2, scoreBar.number3);
 
 
@@ -84,27 +81,29 @@ public class Game extends Application {
     public void gameOver(){
         //остановка анимаци
         timer.stop();
+        bird.animation.stop();
 
         //выводим надпись ГеймОвер
         GameOver gameOver = new GameOver();
-        gameOver.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-GameOver.getWIDTH())/2);
+        gameOver.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-GameOver.getWIDTH())/2);
         gameOver.setTranslateY(130);
         appRoot.getChildren().add(gameOver);
 
         //выводим табло счета
         ScoreBoard scoreBoard = new ScoreBoard(score);
         scoreBoard.createScoreBoard();
-        scoreBoard.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-ScoreBoard.getWIDTH())/2);
+        scoreBoard.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-ScoreBoard.getWIDTH())/2);
         scoreBoard.setTranslateY(230);
         appRoot.getChildren().add(scoreBoard);
 
         //выводим кнопку рестарта
         RestartButton restartButton = new RestartButton();
-        restartButton.setTranslateX(bird.velocity.getX()+(appRoot.getPrefWidth()-RestartButton.getWIDTH())/2);
+        restartButton.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-RestartButton.getWIDTH())/2);
         restartButton.setTranslateY(360);
         restartButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             score = 0;
             wallCounter = 0;
+            walls = null;
 
             primaryStage.close();
             Platform.runLater(() -> {
@@ -122,10 +121,12 @@ public class Game extends Application {
 
     public void createWalls(){
         for (int i = 0; i < Wall.getQUANTITY(); i++) {
-            int enter = (int)(Math.random()*150+80);    //80-230
-            int heightWallUp = new Random().nextInt((int)STAGE_HEIGHT-enter-70-60)+70;
-//            int enter = 80;
-//            int height = 70;
+            int enter = Wall.ENTER_MIN + new Random().nextInt(120);    //80-230
+            int heightWallUp = Wall.WALL_HEIGHT_MIN
+                                + new Random().nextInt((int)STAGE_HEIGHT
+                                                        - Ground.getHEIGHT()
+                                                        - Wall.WALL_HEIGHT_MIN
+                                                        - enter-Wall.WALL_HEIGHT_MIN);
 
             Wall wallUp = new Wall(Wall.WallType.WALL_UP, heightWallUp);
             wallUp.setTranslateX(i*Wall.getGAP()+STAGE_WIDTH);
@@ -170,11 +171,11 @@ public class Game extends Application {
                 int offset = newValue.intValue();
                 if (offset > 200) {
                     gameRoot.setLayoutX(-(offset - 200));
-                    groundRoot.setLayoutX(-(offset - 200));
                 }
             });
-        } else
+        } else {
             gameOver();
+        }
     }
 
     @Override

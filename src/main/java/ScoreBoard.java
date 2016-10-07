@@ -54,7 +54,7 @@ public class ScoreBoard extends Pane {
 
     //добавляет текущий счет на табло
     private void addScoreBar(){
-        scoreBar = new ScoreBar(this, 175, 35);
+        scoreBar = new ScoreBar(175, 35);
 
         scoreBar.number1.scoreImgV.setFitWidth(Number.WIDTH * 0.5);
         scoreBar.number1.scoreImgV.setFitHeight(Number.HEIGHT * 0.5);
@@ -70,7 +70,7 @@ public class ScoreBoard extends Pane {
 
     //добавляет лучший счет на табло
     private void addHighScoreBar(){
-        highScoreBar = new ScoreBar(this, 175, 75);
+        highScoreBar = new ScoreBar(175, 75);
 
         highScoreBar.number1.scoreImgV.setFitWidth(Number.WIDTH * 0.5);
         highScoreBar.number1.scoreImgV.setFitHeight(Number.HEIGHT * 0.5);
