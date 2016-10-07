@@ -7,16 +7,12 @@ import javafx.scene.layout.*;
 public class Ground extends Pane{
     BackgroundImage myBI;
     int height = 90;
-
 //    public Ground() {
 //        myBI = new BackgroundImage(
 //            new Image(getClass().getResourceAsStream("ground_test.png"), 110, height, false, true),
 //            BackgroundRepeat.ROUND, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 //            BackgroundSize.DEFAULT);
 //    }
-
-
-                                                                //общее изображение
     Image groundImg = new Image(getClass().getResourceAsStream("images/Atlas.png"));
     ImageView ground;
 
@@ -27,10 +23,6 @@ public class Ground extends Pane{
             new BackgroundPosition(Side.LEFT,0,true,Side.BOTTOM,0,true),
 //                        BackgroundPosition.DEFAULT,
             BackgroundSize.DEFAULT);
-
-
-
-//
 //        //конструктор блока
 //        ground = new ImageView(groundImg);
 //        ground.setViewport(new Rectangle2D(584,0,336,112));

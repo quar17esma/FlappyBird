@@ -26,6 +26,7 @@ public class Game extends Application {
     Pane appRoot;
     Pane gameRoot;
     Pane groundRoot;
+
     Ground ground;
     Music music;
 
@@ -35,10 +36,11 @@ public class Game extends Application {
     static int wallCounter = 0;
     ScoreBar scoreBar;
     Scene mainScene;
-    ImageView background;
     Stage primaryStage;
+    //размер окна
     private static final double STAGE_WIDTH = 600;
     private static final double STAGE_HEIGHT = 550;
+    //файл фона
     private static final String BACKGROUND_FILE = "images/background.png";
 
     private Parent createContent(){
@@ -77,8 +79,6 @@ public class Game extends Application {
 
         return appRoot;
     }
-
-
 
     //производит необходимые действия при проигрыше
     public void gameOver(){
@@ -123,7 +123,7 @@ public class Game extends Application {
     public void createWalls(){
         for (int i = 0; i < Wall.getQUANTITY(); i++) {
             int enter = (int)(Math.random()*150+80);    //80-230
-            int heightWallUp = new Random().nextInt((int)STAGE_HEIGHT-enter-70-60) + 70;
+            int heightWallUp = new Random().nextInt((int)STAGE_HEIGHT-enter-70-60)+70;
 //            int enter = 80;
 //            int height = 70;
 

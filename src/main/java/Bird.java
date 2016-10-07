@@ -12,9 +12,12 @@ import java.util.ArrayList;
 public class Bird extends Pane {
     //кол-во кадров анимации
     private static final int COUNT = 3;
-    //размер кадра
+    //размер птички
     private static final int WIDTH = 34;
     private static final int HEIGHT = 24;
+    //начальные координаты
+    private static final double START_POSITION_X = 100;
+    private static final double START_POSITION_Y = 200;
     //файл изображений птички
     private static final String BIRD_FILE = "images/Bird.png";
     //координаты первого кадра
@@ -23,8 +26,9 @@ public class Bird extends Pane {
     //изображение птички
     Image birdImg;
     ImageView imageView;
-
+    //анимация
     SpriteAnimation animation;
+
     Point2D velocity;
 
     //состояние птички(жива или нет)
@@ -33,6 +37,8 @@ public class Bird extends Pane {
     public Bird() {
         isAlive = true;
 
+
+        //изображение птички
         birdImg = new Image(getClass().getResourceAsStream(BIRD_FILE));
 
         imageView = new ImageView(birdImg);
@@ -46,8 +52,8 @@ public class Bird extends Pane {
 
 
         velocity  = new Point2D(0, 0);
-        setTranslateX(100);
-        setTranslateY(300);
+        setTranslateX(START_POSITION_X);
+        setTranslateY(START_POSITION_Y);
     }
 
     //перемещает птичку по горизонтали
@@ -56,14 +62,14 @@ public class Bird extends Pane {
             for (Wall wall: walls) {
                 //при столкновении с препятствием - птичка упирается в него и умирает
                 if (getBoundsInParent().intersects(wall.getBoundsInParent())){
-                    if (getTranslateX()+34 == wall.getTranslateX()) {
+                    if (getTranslateX()+WIDTH == wall.getTranslateX()) {
                         setTranslateX(getTranslateX()-1);
                         die();
                         return;
                     }
                 }
                 //при прохождении препятствия - увеличиваем счет
-                if (getTranslateX()+34 == wall.getTranslateX()){
+                if (getTranslateX()+WIDTH == wall.getTranslateX()){
                     Game.wallCounter++;
                     if (Game.wallCounter%2==0){
                         Game.score++;
@@ -95,10 +101,10 @@ public class Bird extends Pane {
             }
 
             if (getTranslateY()<0)
-                setTranslateX(0);
+                setTranslateY(0);
 
-            if (getTranslateY()>Game.getStageHeight()-112+20-24-1){
-                setTranslateY(Game.getStageHeight()-112+20-24-1);
+            if (getTranslateY()>Game.getStageHeight()-112+20-HEIGHT-1){
+                setTranslateY(Game.getStageHeight()-112+20-HEIGHT-1);
                 die();
             }
             setTranslateY(getTranslateY() + (moveDown?1:-1));
@@ -111,14 +117,10 @@ public class Bird extends Pane {
         music.jumpSound();
     }
 
-    //убивает птичку
+    //убивает птичку(птичка наклоняется и падает)
     public void die(){
         getTransforms().add(new Rotate(90,0,0));
-        setTranslateY(550-112+20-34-1);
+        setTranslateY(Game.getStageHeight()-112+20-WIDTH-1);
         isAlive = false;
-    }
-
-    public void setVelocity(Point2D velocity) {
-        this.velocity = velocity;
     }
 }
