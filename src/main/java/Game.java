@@ -4,12 +4,9 @@ import javafx.application.Platform;
 import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -85,7 +82,7 @@ public class Game extends Application {
 
         //выводим надпись ГеймОвер
         GameOver gameOver = new GameOver();
-        gameOver.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-GameOver.getWIDTH())/2);
+        gameOver.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-GameOver.getFitWidth())/2);
         gameOver.setTranslateY(130);
         appRoot.getChildren().add(gameOver);
 
@@ -105,20 +102,26 @@ public class Game extends Application {
             wallCounter = 0;
             walls = null;
 
+            music.gameOverSoundStop();
+
             primaryStage.close();
+
             Platform.runLater(() -> {
                 try {
                     new Game().start(new Stage());
-                } catch (Exception e) {e.printStackTrace();}
+                } catch (Exception e) {
+                    System.out.println("[ReRun] E Error: " + e.getMessage());
+                }
             });
         });
         appRoot.getChildren().add(restartButton);
 
         //отановка фоновой музыки и запуск звука проигрыща
         music.musicBackgroundStop();
-        music.gameOverSound();
+        music.gameOverSoundPlay();
     }
 
+    //создает препятствия случайных размеров
     public void createWalls(){
         for (int i = 0; i < Wall.getQUANTITY(); i++) {
             int enter = Wall.ENTER_MIN + new Random().nextInt(120);    //80-230

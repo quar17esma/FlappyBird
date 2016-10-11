@@ -6,6 +6,7 @@ import javax.sound.sampled.Clip;
 public class Music {
     private static Thread backgroundMusic;
     private static Clip clipBG;
+    private static Clip clipGameOver;
     private static final String BACKGROUND_MUSIC_FILE = "sounds/ThemeBackground.wav";
     private static final String JUMP_SOUND_FILE = "sounds/jump.wav";
     private static final String GAMEOVER_SOUND_FILE = "sounds/MarioDie.wav";
@@ -49,9 +50,9 @@ public class Music {
     }
 
     //воспроизводит звук проигрыша
-    public void gameOverSound(){
+    public void gameOverSoundPlay(){
         try{
-            Clip clipGameOver = AudioSystem.getClip();
+            clipGameOver = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(
                     getClass().getResourceAsStream(GAMEOVER_SOUND_FILE));
             clipGameOver.open(inputStream);
@@ -59,5 +60,10 @@ public class Music {
         } catch (Exception e){
             System.out.println("[Run Gameover Sound] E Error: " + e.getMessage());
         }
+    }
+
+
+    public synchronized void gameOverSoundStop(){
+        clipGameOver.stop();
     }
 }

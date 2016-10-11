@@ -8,8 +8,13 @@ import javafx.scene.paint.Color;
 public class GameOver extends Pane {
 
     //размер надписи
-    private static final double WIDTH = 192*1.5;
-    private static final double HEIGHT = 42*1.5;
+    private static final double WIDTH = 192;
+    private static final double HEIGHT = 42;
+    //коофициент увеличения размера изображения надписи
+    private static final double SIZE_MULTIPLIER = 1.5;
+    //исходная точка изображения
+    private static final double START_X = 790;
+    private static final double START_Y = 118;
     //файл изображения
     private static final String GAMEOVER_FILE = "images/Atlas.png";
 
@@ -21,14 +26,14 @@ public class GameOver extends Pane {
         gameOverImg = new Image(getClass().getResourceAsStream(GAMEOVER_FILE));
 
         gameOverImgV = new ImageView(gameOverImg);
-        gameOverImgV.setViewport(new Rectangle2D(790,118,192,42));
-        gameOverImgV.setFitWidth(WIDTH);
-        gameOverImgV.setFitHeight(HEIGHT);
+        gameOverImgV.setViewport(new Rectangle2D(START_X,START_Y,WIDTH,HEIGHT));
+        gameOverImgV.setFitWidth(WIDTH*SIZE_MULTIPLIER);
+        gameOverImgV.setFitHeight(HEIGHT*SIZE_MULTIPLIER);
 
         getChildren().add(gameOverImgV);
     }
 
-    public static double getWIDTH() {
-        return WIDTH;
+    public static double getFitWidth() {
+        return WIDTH*SIZE_MULTIPLIER;
     }
 }
