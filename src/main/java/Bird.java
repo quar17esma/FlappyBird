@@ -24,8 +24,8 @@ public class Bird extends Pane {
     int offsetX = 0;
     int offsetY = 0;
     //изображение птички
-    Image birdImg;
-    ImageView imageView;
+    private static Image birdImg;
+    private ImageView imageView;
     //анимация
     SpriteAnimation animation;
 

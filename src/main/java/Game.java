@@ -194,6 +194,8 @@ public class Game extends Application {
     public void start(Stage primaryStage) throws Exception {
         //главоное окно
         this.primaryStage = primaryStage;
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("images/BirdTitleBar.png")));
+        primaryStage.setTitle("Flappy Bird by Quar17esma");
 
         //главная сцена в окне
         mainScene = new Scene(createContent());
