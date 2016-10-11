@@ -1,4 +1,5 @@
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -25,6 +26,8 @@ public class RestartButton extends Pane{
         restartButtonImgV.setFitHeight(HEIGHT);
 
         getChildren().add(restartButtonImgV);
+
+        setCursor(Cursor.HAND);
     }
 
     public static double getWIDTH() {

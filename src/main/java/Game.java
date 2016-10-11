@@ -2,6 +2,7 @@ import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Side;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -37,6 +38,9 @@ public class Game extends Application {
     static int wallCounter = 0;
 
     boolean isGameStarted;
+
+    GetReady getReady;
+    Tap tap;
 
     //размер окна
     private static final double STAGE_WIDTH = 600;
@@ -81,6 +85,15 @@ public class Game extends Application {
 
         isGameStarted = false;
 
+        getReady = new GetReady();
+        getReady.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-GetReady.getFitWidth())/2);
+        getReady.setTranslateY(130);
+        gameRoot.getChildren().add(getReady);
+
+        tap = new Tap();
+        tap.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-Tap.getFitWidth())/2);
+        tap.setTranslateY(250);
+        gameRoot.getChildren().add(tap);
 
         return appRoot;
     }
@@ -130,6 +143,8 @@ public class Game extends Application {
         //отановка фоновой музыки и запуск звука проигрыща
         music.musicBackgroundStop();
         music.gameOverSoundPlay();
+
+        mainScene.setCursor(Cursor.DEFAULT);
     }
 
     //создает препятствия случайных размеров
@@ -200,10 +215,17 @@ public class Game extends Application {
         this.primaryStage = primaryStage;
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(PRIMARY_STAGE_ICON_FILE)));
         primaryStage.setTitle(STAGE_TITLE_TEXT);
+        primaryStage.setWidth(STAGE_WIDTH);
+        primaryStage.setHeight(STAGE_HEIGHT);
+        primaryStage.setResizable(false);
 
         //главная сцена в окне
         mainScene = new Scene(createContent());
+        mainScene.setCursor(Cursor.HAND);
         mainScene.setOnMouseClicked(event->{
+            gameRoot.getChildren().remove(getReady);
+            gameRoot.getChildren().remove(tap);
+
             isGameStarted = true;
 
             if (bird.isAlive()){

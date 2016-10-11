@@ -18,8 +18,8 @@ public class GameOver extends Pane {
     //файл изображения
     private static final String GAMEOVER_FILE = "images/Atlas.png";
 
-    Image gameOverImg;
-    ImageView gameOverImgV;
+    private static Image gameOverImg;
+    private ImageView gameOverImgV;
 
     //устанавливает изображение и его размер
     public GameOver() {
