@@ -32,7 +32,7 @@ public class Bird extends Pane {
     Point2D velocity;
 
     //состояние птички(жива или нет)
-    public boolean isAlive;
+    private boolean isAlive;
 
     public Bird() {
         isAlive = true;
@@ -94,8 +94,7 @@ public class Bird extends Pane {
                     } else {
                         setTranslateY(getTranslateY()+1);
                     }
-                    die(wall);
-//                    die();
+                    die(wall, walls);
                     return;
                 }
             }
@@ -124,16 +123,23 @@ public class Bird extends Pane {
         isAlive = false;
         getTransforms().add(new Rotate(90,0,0));
         setTranslateY(Game.getStageHeight()-Ground.getHEIGHT()-WIDTH-1);
-        animation.stop();
     }
     //убивает птичку(птичка наклоняется и падает)
-    public void die(Wall intersectedWall){
+    public void die(Wall intersectedWall, ArrayList<Wall> walls){
         isAlive = false;
+        //наклоняем птичку
         getTransforms().add(new Rotate(90,0,0));
+
+        Wall nextWall = walls.get(walls.indexOf(intersectedWall)+1);
         setTranslateY(Game.getStageHeight()-Ground.getHEIGHT()-WIDTH-1);
-        while (getBoundsInParent().intersects(intersectedWall.getBoundsInParent())){
+        //отступаем от препятствия
+        while (getBoundsInParent().intersects(intersectedWall.getBoundsInParent())
+                ||getBoundsInParent().intersects(nextWall.getBoundsInParent())){
             setTranslateX(getTranslateX()-1);
         }
-        animation.stop();
+    }
+    //жива ли птичка
+    public boolean isAlive(){
+        return isAlive;
     }
 }

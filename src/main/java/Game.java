@@ -16,23 +16,28 @@ import java.util.Random;
  * Created by Quar17esma on 04.08.2016.
  */
 public class Game extends Application {
+    private Stage primaryStage;
+    private Scene mainScene;
+
     private AnimationTimer timer;
 
     private BackgroundImage backgroundImg;
 
-    Pane appRoot;
-    Pane gameRoot;
+    private Pane appRoot;
+    private Pane gameRoot;
 
-    Ground ground;
-    Music music;
+    private Bird bird;
+    private Ground ground;
+    private ScoreBar scoreBar;
+    private ArrayList<Wall> walls = new ArrayList<>();
 
-    ArrayList<Wall> walls = new ArrayList<>();
-    Bird bird;
+    private Music music;
+
     static int score = 0;
     static int wallCounter = 0;
-    ScoreBar scoreBar;
-    Scene mainScene;
-    Stage primaryStage;
+
+    boolean isGameStarted;
+
     //размер окна
     private static final double STAGE_WIDTH = 600;
     private static final double STAGE_HEIGHT = 550;
@@ -69,6 +74,8 @@ public class Game extends Application {
         //текущий счет
         scoreBar = new ScoreBar(gameRoot);
         appRoot.getChildren().addAll(scoreBar.number1, scoreBar.number2, scoreBar.number3);
+
+        isGameStarted = false;
 
 
         return appRoot;
@@ -163,21 +170,23 @@ public class Game extends Application {
     }
 
     public void update() {
-        if (bird.isAlive) {
-            if (bird.velocity.getY() < 5)
-                bird.velocity = bird.velocity.add(0, 1);
+        if (isGameStarted()) {
+            if (bird.isAlive()) {
+                if (bird.velocity.getY() < 5)
+                    bird.velocity = bird.velocity.add(0, 1);
 
-            bird.moveX((int) bird.velocity.getX(), walls, scoreBar);
-            bird.moveY((int) bird.velocity.getY(), walls);
+                bird.moveX((int) bird.velocity.getX(), walls, scoreBar);
+                bird.moveY((int) bird.velocity.getY(), walls);
 
-            bird.translateXProperty().addListener((ov, oldValue, newValue) -> {
-                int offset = newValue.intValue();
-                if (offset > 200) {
-                    gameRoot.setLayoutX(-(offset - 200));
-                }
-            });
-        } else {
-            gameOver();
+                bird.translateXProperty().addListener((ov, oldValue, newValue) -> {
+                    int offset = newValue.intValue();
+                    if (offset > 200) {
+                        gameRoot.setLayoutX(-(offset - 200));
+                    }
+                });
+            } else {
+                gameOver();
+            }
         }
     }
 
@@ -188,9 +197,14 @@ public class Game extends Application {
 
         //главная сцена в окне
         mainScene = new Scene(createContent());
+//        bird.animation.play();
         mainScene.setOnMouseClicked(event->{
-            bird.jump(music);
-            bird.animation.play();
+            isGameStarted = true;
+
+            if (bird.isAlive()){
+                bird.jump(music);
+                bird.animation.play();
+            }
         });
         primaryStage.setScene(mainScene);
 
@@ -219,5 +233,13 @@ public class Game extends Application {
 
     public static double getStageHeight() {
         return STAGE_HEIGHT;
+    }
+
+    public ArrayList<Wall> getWalls() {
+        return walls;
+    }
+
+    public boolean isGameStarted(){
+        return isGameStarted;
     }
 }
