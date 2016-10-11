@@ -43,6 +43,10 @@ public class Game extends Application {
     private static final double STAGE_HEIGHT = 550;
     //файл фона
     private static final String BACKGROUND_FILE = "images/background.png";
+    //файл иконки окна
+    private static final String PRIMARY_STAGE_ICON_FILE = "images/BirdTitleBar.png";
+    private static final String STAGE_TITLE_TEXT = "Flappy Bird by Quar17esma";
+
 
     private Parent createContent(){
         //корневая панель
@@ -194,12 +198,11 @@ public class Game extends Application {
     public void start(Stage primaryStage) throws Exception {
         //главоное окно
         this.primaryStage = primaryStage;
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("images/BirdTitleBar.png")));
-        primaryStage.setTitle("Flappy Bird by Quar17esma");
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(PRIMARY_STAGE_ICON_FILE)));
+        primaryStage.setTitle(STAGE_TITLE_TEXT);
 
         //главная сцена в окне
         mainScene = new Scene(createContent());
-//        bird.animation.play();
         mainScene.setOnMouseClicked(event->{
             isGameStarted = true;
 

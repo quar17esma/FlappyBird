@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 public class Wall extends Pane {
 
     //файл с изображением препятствия
-    private Image wallImg;
+    private static Image wallImg;
     private ImageView wall;
     private static final String WALL_IMAGE_FILE = "images/Walls.png";
 

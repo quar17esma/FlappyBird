@@ -4,7 +4,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-//Надпись об окончании игра (GAMEOVER)
+//Надпись об окончании игры (GAMEOVER)
 public class GameOver extends Pane {
 
     //размер надписи

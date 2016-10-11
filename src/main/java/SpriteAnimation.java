@@ -7,18 +7,20 @@ import javafx.util.Duration;
 
 //класс отвечает за анимацию птички
 public class SpriteAnimation  extends Transition{
-    private final ImageView imageView;                      //изображение
-    private final int count;                                //кол-во кадров
-
-    private int offsetX;                                    //координаты первого кадра
+    //изображение
+    private final ImageView imageView;
+    //кол-во кадров
+    private final int count;
+    //координаты первого кадра
+    private int offsetX;
     private int offsetY;
-
-    private final int width;                                //размер кадра
+    //размер кадра
+    private final int width;
     private final int height;
 
-    public SpriteAnimation(                                 //конструктор с параметрами и временем
-
-//параметры конструктора
+    //конструктор с параметрами и временем
+    public SpriteAnimation(
+        //параметры конструктора
        ImageView imageView,
        Duration duration,
        int count,
@@ -34,9 +36,9 @@ public class SpriteAnimation  extends Transition{
                                                                 //устанавливаем:
         setCycleDuration(duration);                             //длительность одниго круга кадров,
         setCycleCount(Animation.INDEFINITE);                    //кол-во повторений анимации,
-        setInterpolator(Interpolator.LINEAR);                   //скорость анимации (линейная),
+        setInterpolator(Interpolator.LINEAR);                   //скорость анимации (линейная).
 
-                                                                //указываем кадр на картинке(расположение и размер)
+        //указываем кадр на картинке(расположение и размер)
         this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
     }
 
@@ -48,11 +50,13 @@ public class SpriteAnimation  extends Transition{
     }         //смена колонки
 
 
-//изменяем изображение, вызывается при каждом кадре анимации (заначение параметра изменяется от 0.00 до 1.00)
+    //изменяем изображение, вызывается при каждом кадре анимации
+    //(заначение параметра изменяется от 0.00 до 1.00)
     protected void interpolate(double frac) {
         final int index = Math.min((int)Math.floor(count*frac), count-1);
-        final int x = index*width+offsetX;            //столбец кадра (изменяется с изменением frac)
-
-        imageView.setViewport(new Rectangle2D(x, offsetY, width, height));    //смена кадра с новыми координатами
+        //столбец кадра (изменяется с изменением frac)
+        final int x = index*width+offsetX;
+        //смена кадра с новыми координатами
+        imageView.setViewport(new Rectangle2D(x, offsetY, width, height));
     }
 }
