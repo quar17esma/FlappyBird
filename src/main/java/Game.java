@@ -1,12 +1,10 @@
 import javafx.animation.*;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Side;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -27,6 +25,7 @@ public class Game extends Application {
     private Pane appRoot;
     private Pane gameRoot;
     private PreGameRoot preGameRoot;
+    private PostGameRoot postGameRoot;
 
     private Bird bird;
     private Ground ground;
@@ -99,41 +98,9 @@ public class Game extends Application {
         timer.stop();
         bird.animation.stop();
 
-        //выводим надпись ГеймОвер
-        GameOver gameOver = new GameOver();
-        gameOver.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-GameOver.getFitWidth())/2);
-        gameOver.setTranslateY(130);
-        appRoot.getChildren().add(gameOver);
-
-        //выводим табло счета
-        ScoreBoard scoreBoard = new ScoreBoard(score);
-        scoreBoard.createScoreBoard();
-        scoreBoard.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-ScoreBoard.getWIDTH())/2);
-        scoreBoard.setTranslateY(230);
-        appRoot.getChildren().add(scoreBoard);
-
-        //выводим кнопку рестарта
-        RestartButton restartButton = new RestartButton();
-        restartButton.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-RestartButton.getWIDTH())/2);
-        restartButton.setTranslateY(360);
-        restartButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            score = 0;
-            wallCounter = 0;
-            walls = null;
-
-            music.gameOverSoundStop();
-
-            primaryStage.close();
-
-            Platform.runLater(() -> {
-                try {
-                    new Game().start(new Stage());
-                } catch (Exception e) {
-                    System.out.println("[ReRun] E Error: " + e.getMessage());
-                }
-            });
-        });
-        appRoot.getChildren().add(restartButton);
+        //панель при проигрыше (Счет, GameOver, кнопка рестарта)
+        postGameRoot = new PostGameRoot(bird, score, walls, music, primaryStage);
+        appRoot.getChildren().add(postGameRoot);
 
         //отановка фоновой музыки и запуск звука проигрыща
         music.musicBackgroundStop();
