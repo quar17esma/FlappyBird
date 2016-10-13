@@ -26,6 +26,7 @@ public class Game extends Application {
 
     private Pane appRoot;
     private Pane gameRoot;
+    private PreGameRoot preGameRoot;
 
     private Bird bird;
     private Ground ground;
@@ -38,9 +39,6 @@ public class Game extends Application {
     static int wallCounter = 0;
 
     boolean isGameStarted;
-
-    GetReady getReady;
-    Tap tap;
 
     //размер окна
     private static final double STAGE_WIDTH = 600;
@@ -87,15 +85,10 @@ public class Game extends Application {
         //музыка
         music = new Music();
 
-        getReady = new GetReady();
-        getReady.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-GetReady.getFitWidth())/2);
-        getReady.setTranslateY(130);
-        gameRoot.getChildren().add(getReady);
+        //панель подсказок перед началом игры
+        preGameRoot = new PreGameRoot(bird);
+        appRoot.getChildren().add(preGameRoot);
 
-        tap = new Tap();
-        tap.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-Tap.getFitWidth())/2);
-        tap.setTranslateY(250);
-        gameRoot.getChildren().add(tap);
 
         return appRoot;
     }
@@ -225,8 +218,7 @@ public class Game extends Application {
         mainScene = new Scene(createContent());
         mainScene.setCursor(Cursor.HAND);
         mainScene.setOnMouseClicked(event->{
-            gameRoot.getChildren().remove(getReady);
-            gameRoot.getChildren().remove(tap);
+            appRoot.getChildren().remove(preGameRoot);
 
             isGameStarted = true;
 
