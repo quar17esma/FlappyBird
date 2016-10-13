@@ -45,7 +45,7 @@ public class ScoreBoard extends Pane {
         scoreBoardImg = new Image(getClass().getResourceAsStream(SCOREBOARD_FILE));
 
         scoreBoardImgV = new ImageView(scoreBoardImg);
-        scoreBoardImgV.setViewport(new Rectangle2D(0, 0, 229, 118));
+        scoreBoardImgV.setViewport(new Rectangle2D(0, 0, WIDTH, HEIGHT));
         scoreBoardImgV.setFitWidth(WIDTH);
         scoreBoardImgV.setFitHeight(HEIGHT);
 
@@ -54,32 +54,24 @@ public class ScoreBoard extends Pane {
 
     //добавляет текущий счет на табло
     private void addScoreBar(){
-        scoreBar = new ScoreBar(175, 35);
+        scoreBar = new ScoreBar(0.5);
 
-        scoreBar.number1.scoreImgV.setFitWidth(Number.WIDTH * 0.5);
-        scoreBar.number1.scoreImgV.setFitHeight(Number.HEIGHT * 0.5);
-        scoreBar.number2.scoreImgV.setFitWidth(Number.WIDTH * 0.5);
-        scoreBar.number2.scoreImgV.setFitHeight(Number.HEIGHT * 0.5);
-        scoreBar.number3.scoreImgV.setFitWidth(Number.WIDTH * 0.5);
-        scoreBar.number3.scoreImgV.setFitHeight(Number.HEIGHT * 0.5);
+        scoreBar.setTranslateX(165);
+        scoreBar.setTranslateY(35);
 
-        getChildren().addAll(scoreBar.number1, scoreBar.number2, scoreBar.number3);
+        getChildren().add(scoreBar);
 
         scoreBar.showScore(score);
     }
 
     //добавляет лучший счет на табло
     private void addHighScoreBar(){
-        highScoreBar = new ScoreBar(175, 75);
+        highScoreBar = new ScoreBar(0.5);
 
-        highScoreBar.number1.scoreImgV.setFitWidth(Number.WIDTH * 0.5);
-        highScoreBar.number1.scoreImgV.setFitHeight(Number.HEIGHT * 0.5);
-        highScoreBar.number2.scoreImgV.setFitWidth(Number.WIDTH * 0.5);
-        highScoreBar.number2.scoreImgV.setFitHeight(Number.HEIGHT * 0.5);
-        highScoreBar.number3.scoreImgV.setFitWidth(Number.WIDTH * 0.5);
-        highScoreBar.number3.scoreImgV.setFitHeight(Number.HEIGHT * 0.5);
+        highScoreBar.setTranslateX(165);
+        highScoreBar.setTranslateY(75);
 
-        getChildren().addAll(highScoreBar.number1, highScoreBar.number2, highScoreBar.number3);
+        getChildren().add(highScoreBar);
 
         highScoreManager = new HighScoreManager();
         highScoreManager.createFile();

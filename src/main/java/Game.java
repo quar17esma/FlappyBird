@@ -72,18 +72,20 @@ public class Game extends Application {
         ground.setPrefSize(Wall.getQUANTITY()*Wall.getGAP()+STAGE_WIDTH, Ground.getHEIGHT());
         gameRoot.getChildren().add(ground);
 
-        //музыка
-        music = new Music();
-
         //птичка
         bird = new Bird();
         gameRoot.getChildren().add(bird);
 
         //текущий счет
-        scoreBar = new ScoreBar(gameRoot);
-        appRoot.getChildren().addAll(scoreBar.number1, scoreBar.number2, scoreBar.number3);
+        scoreBar = new ScoreBar(1);
+        scoreBar.setTranslateX((appRoot.getPrefWidth() - Number.WIDTH*3)/2);
+        scoreBar.setTranslateY(60);
+        appRoot.getChildren().add(scoreBar);
 
         isGameStarted = false;
+
+        //музыка
+        music = new Music();
 
         getReady = new GetReady();
         getReady.setTranslateX(bird.velocity.getX()+(STAGE_WIDTH-GetReady.getFitWidth())/2);
