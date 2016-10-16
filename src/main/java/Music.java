@@ -7,9 +7,11 @@ public class Music {
     private static Thread backgroundMusic;
     private static Clip clipBG;
     private static Clip clipGameOver;
+    private static Clip clipFree;
     private static final String BACKGROUND_MUSIC_FILE = "sounds/ThemeBackground.wav";
     private static final String JUMP_SOUND_FILE = "sounds/jump.wav";
     private static final String GAMEOVER_SOUND_FILE = "sounds/MarioDie.wav";
+    private static final String FREE_SOUND_FILE = "sounds/StageClear.wav";
 
     //создает и запускает поток воспроизводящий фоновою музыку
     public synchronized void musicBackgroundPlay() {
@@ -57,13 +59,46 @@ public class Music {
                     getClass().getResourceAsStream(GAMEOVER_SOUND_FILE));
             clipGameOver.open(inputStream);
             clipGameOver.start();
+
         } catch (Exception e){
             System.out.println("[Run Gameover Sound] E Error: " + e.getMessage());
         }
     }
 
-
     public synchronized void gameOverSoundStop(){
         clipGameOver.stop();
+    }
+
+    //воспроизводит звук после прохождения все препятствий
+    public void freeSoundPlay(){
+        try{
+            clipFree = AudioSystem.getClip();
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                    getClass().getResourceAsStream(FREE_SOUND_FILE));
+            clipFree.open(inputStream);
+            clipFree.start();
+
+        } catch (Exception e){
+            System.out.println("[Run Free Sound] E Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    //останавливает звук о прохождении всех препятствий
+    public synchronized void freeSoundStop(){
+        clipFree.stop();
+    }
+
+    //останавливает все звуки
+    public synchronized void allSoundsStop(){
+        if (clipBG != null){
+            clipBG.stop();
+        }
+        if (clipGameOver != null){
+            clipGameOver.stop();
+        }
+        if (clipFree != null){
+            clipFree.stop();
+        }
     }
 }

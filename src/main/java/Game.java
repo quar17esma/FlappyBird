@@ -66,7 +66,7 @@ public class Game extends Application {
 
         //земля
         ground = new Ground();
-        ground.setPrefSize(Wall.getQUANTITY()*Wall.getGAP()+STAGE_WIDTH, Ground.getHEIGHT());
+        ground.setPrefSize((Wall.getQUANTITY()+1)*Wall.getGAP()+STAGE_WIDTH, Ground.getHEIGHT());
         gameRoot.getChildren().add(ground);
 
         //птичка
@@ -92,7 +92,7 @@ public class Game extends Application {
         return appRoot;
     }
 
-    //производит необходимые действия при проигрыше
+    //производит необходимые действия при проигрыше или прохождении всех препятствий
     public void gameOver(){
         //остановка анимаци
         timer.stop();
@@ -104,7 +104,12 @@ public class Game extends Application {
 
         //отановка фоновой музыки и запуск звука проигрыща
         music.musicBackgroundStop();
-        music.gameOverSoundPlay();
+
+        if (bird.isFree()) {
+            music.freeSoundPlay();
+        } else {
+            music.gameOverSoundPlay();
+        }
 
         mainScene.setCursor(Cursor.DEFAULT);
     }
@@ -113,6 +118,7 @@ public class Game extends Application {
     public void createWalls(){
         for (int i = 0; i < Wall.getQUANTITY(); i++) {
             int enter = Wall.ENTER_MIN + new Random().nextInt(120);    //80-230
+//            int enter = 230;
             int heightWallUp = Wall.WALL_HEIGHT_MIN
                                 + new Random().nextInt((int)STAGE_HEIGHT
                                                         - Ground.getHEIGHT()
@@ -152,7 +158,7 @@ public class Game extends Application {
 
     public void update() {
         if (isGameStarted()) {
-            if (bird.isAlive()) {
+            if (bird.isAlive()&&!bird.isFree()) {
                 if (bird.velocity.getY() < 5)
                     bird.velocity = bird.velocity.add(0, 1);
 
@@ -189,7 +195,7 @@ public class Game extends Application {
 
             isGameStarted = true;
 
-            if (bird.isAlive()){
+            if (bird.isAlive()&&!bird.isFree()){
                 bird.jump(music);
                 bird.animation.play();
             }

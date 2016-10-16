@@ -33,9 +33,12 @@ public class Bird extends Pane {
 
     //состояние птички(жива или нет)
     private boolean isAlive;
+    //освободилась ли птичка(прошла все препятствия)
+    private boolean isFree;
 
     public Bird() {
         isAlive = true;
+        isFree = false;
 
         //изображение птички
         birdImg = new Image(getClass().getResourceAsStream(BIRD_FILE));
@@ -76,6 +79,12 @@ public class Bird extends Pane {
                     }
                 }
             }
+
+            //если прошли все препятствия -
+            if (getTranslateX()>(Wall.getQUANTITY()-0.5)*Wall.getGAP()+Game.getStageWidth()){
+                free();
+            }
+
             //перемещаем птичку вперед
             setTranslateX(getTranslateX()+1);
         }
@@ -99,15 +108,15 @@ public class Bird extends Pane {
                 }
             }
 
-
+            //птичка не вылетает за вверхнюю границу окна
             if (getTranslateY()<0)
                 setTranslateY(0);
-
+            //умирает при соприкосновении с землей
             if (getTranslateY()>Game.getStageHeight()-Ground.getHEIGHT()-HEIGHT){
                 setTranslateY(Game.getStageHeight()-Ground.getHEIGHT()-HEIGHT-1);
                 die();
             }
-
+            //сила притяжения(тянет вниз при падении и вверх при взмахе крыльев)
             setTranslateY(getTranslateY() + (moveDown?1:-1));
         }
     }
@@ -116,6 +125,11 @@ public class Bird extends Pane {
     public void jump(Music music){
         velocity = new Point2D(3, -9);
         music.jumpSound();
+    }
+
+    //освобождает птичку
+    public void free(){
+        isFree = true;
     }
 
     //убивает птичку(птичка наклоняется и падает)
@@ -141,5 +155,9 @@ public class Bird extends Pane {
     //жива ли птичка
     public boolean isAlive(){
         return isAlive;
+    }
+
+    public boolean isFree() {
+        return isFree;
     }
 }

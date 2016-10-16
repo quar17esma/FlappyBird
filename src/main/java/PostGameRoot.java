@@ -8,21 +8,31 @@ import java.util.ArrayList;
 
 public class PostGameRoot extends Pane {
     private GameOver gameOver;
+    private Free free;
     private ScoreBoard scoreBoard;
     private RestartButton restartButton;
 
     private static final double GAME_OVER_Y = 130;
+    private static final double FREE_Y = 120;
     private static final double SCORE_BOARD_Y = 230;
     private static final double RESTART_BUTTON_Y = 360;
 
 
     public PostGameRoot(Bird bird, int score, ArrayList<Wall> walls, Music music, Stage primaryStage) {
-
-        //выводим надпись ГеймОвер
-        gameOver = new GameOver();
-        gameOver.setTranslateX(bird.velocity.getX()+(Game.getStageWidth()-GameOver.getFitWidth())/2);
-        gameOver.setTranslateY(GAME_OVER_Y);
-        getChildren().add(gameOver);
+        //если прошли все препятствия
+        if (bird.isFree()) {
+            //выводим надпись (FlappyBird is Free)
+            free = new Free();
+            free.setTranslateX(bird.velocity.getX() + (Game.getStageWidth() - Free.getFitWidth()) / 2);
+            free.setTranslateY(FREE_Y);
+            getChildren().add(free);
+        } else  {
+            //выводим надпись ГеймОвер
+            gameOver = new GameOver();
+            gameOver.setTranslateX(bird.velocity.getX()+(Game.getStageWidth()-GameOver.getFitWidth())/2);
+            gameOver.setTranslateY(GAME_OVER_Y);
+            getChildren().add(gameOver);
+        }
 
         //выводим табло счета
         scoreBoard = new ScoreBoard(score);
@@ -40,7 +50,7 @@ public class PostGameRoot extends Pane {
             Game.wallCounter = 0;
             walls.clear();
 
-            music.gameOverSoundStop();
+            music.allSoundsStop();
 
             primaryStage.close();
 
