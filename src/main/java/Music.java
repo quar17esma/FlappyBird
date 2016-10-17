@@ -7,10 +7,11 @@ import java.io.BufferedInputStream;
 public class Music {
     private static Thread backgroundMusic;
     private static Clip clipBG;
+    private static Clip clipJump;
     private static Clip clipGameOver;
     private static Clip clipFree;
     private static final String BACKGROUND_MUSIC_FILE = "sounds/ThemeBackground.wav";
-    private static final String JUMP_SOUND_FILE = "sounds/jump.wav";
+    private static final String JUMP_SOUND_FILE = "sounds/Jump.wav";
     private static final String GAMEOVER_SOUND_FILE = "sounds/GameOver.wav";
     private static final String FREE_SOUND_FILE = "sounds/StageClear.wav";
 
@@ -42,7 +43,7 @@ public class Music {
     //воспроизводит звук взмаха крыла(прижка)
     public void jumpSound(){
         try{
-        Clip clipJump = AudioSystem.getClip();
+        clipJump = AudioSystem.getClip();
         AudioInputStream inputStream = AudioSystem.getAudioInputStream(
                 new BufferedInputStream(getClass().getResourceAsStream(JUMP_SOUND_FILE)));
         clipJump.open(inputStream);
