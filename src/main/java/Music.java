@@ -1,6 +1,7 @@
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.io.BufferedInputStream;
 
 //класс отвечает за звуки и музыку
 public class Music {
@@ -21,7 +22,7 @@ public class Music {
                 try {
                     clipBG = AudioSystem.getClip();
                     AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                            getClass().getResourceAsStream(BACKGROUND_MUSIC_FILE));
+                            new BufferedInputStream(getClass().getResourceAsStream(BACKGROUND_MUSIC_FILE)));
                     clipBG.open(inputStream);
                     clipBG.loop(Clip.LOOP_CONTINUOUSLY);
                     clipBG.start();
@@ -43,7 +44,7 @@ public class Music {
         try{
         Clip clipJump = AudioSystem.getClip();
         AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                getClass().getResourceAsStream(JUMP_SOUND_FILE));
+                new BufferedInputStream(getClass().getResourceAsStream(JUMP_SOUND_FILE)));
         clipJump.open(inputStream);
         clipJump.start();
     } catch (Exception e){
@@ -56,7 +57,7 @@ public class Music {
         try{
             clipGameOver = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                    getClass().getResourceAsStream(GAMEOVER_SOUND_FILE));
+                    new BufferedInputStream(getClass().getResourceAsStream(GAMEOVER_SOUND_FILE)));
             clipGameOver.open(inputStream);
             clipGameOver.start();
 
@@ -74,7 +75,7 @@ public class Music {
         try{
             clipFree = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                    getClass().getResourceAsStream(FREE_SOUND_FILE));
+                    new BufferedInputStream(getClass().getResourceAsStream(FREE_SOUND_FILE)));
             clipFree.open(inputStream);
             clipFree.start();
 
