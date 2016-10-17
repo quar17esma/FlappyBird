@@ -6,96 +6,158 @@ import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 
+//Птичка
 public class Bird extends Pane {
-    Image BirdImg = new Image(getClass().getResourceAsStream("Bird.png"));  //Картинка Птички
-    ImageView imageView = new ImageView(BirdImg);
-
-    int count = 3;                                          //кол-во кадров
-
-    int offsetX = 0;                                       //координаты первого кадра
+    //кол-во кадров анимации
+    private static final int COUNT = 3;
+    //размер птички
+    private static final int WIDTH = 34;
+    private static final int HEIGHT = 24;
+    //начальные координаты
+    private static final double START_POSITION_X = 100;
+    private static final double START_POSITION_Y = 200;
+    //файл изображений птички
+    private static final String BIRD_FILE = "images/Bird.png";
+    //координаты первого кадра
+    int offsetX = 0;
     int offsetY = 0;
+    //изображение птички
+    private static Image birdImg;
+    private ImageView imageView;
+    //анимация
+    SpriteAnimation animation;
 
-    int width = 34;                                         //размер кадра
-    int height = 24;
+    Point2D velocity;
 
-    public SpriteAnimation animation;
-
-    public Point2D velocity;
-
-    public boolean isAlive = true;
+    //состояние птички(жива или нет)
+    private boolean isAlive;
+    //освободилась ли птичка(прошла все препятствия)
+    private boolean isFree;
 
     public Bird() {
-        imageView.setFitHeight(24);                         //изменяем размер Птички
-        imageView.setFitWidth(34);
+        isAlive = true;
+        isFree = false;
 
-        imageView.setViewport(new Rectangle2D(offsetX,offsetY,width,height));  //устанавливаем кадр
-        //создаем анимацию Марио
-        animation = new SpriteAnimation(this.imageView, Duration.millis(200),count,offsetX,offsetY,width,height);
-        getChildren().addAll(this.imageView);                                   //связываем картинку с персонажем Марио
+        //изображение птички
+        birdImg = new Image(getClass().getResourceAsStream(BIRD_FILE));
+
+        imageView = new ImageView(birdImg);
+        imageView.setFitHeight(HEIGHT);
+        imageView.setFitWidth(WIDTH);
+        imageView.setViewport(new Rectangle2D(offsetX,offsetY, WIDTH, HEIGHT));
+
+        //создаем анимацию Птички
+        animation = new SpriteAnimation(this.imageView,Duration.millis(200),COUNT,offsetX,offsetY, WIDTH, HEIGHT);
+        getChildren().addAll(this.imageView);
 
 
         velocity  = new Point2D(0, 0);
-        setTranslateX(100);
-        setTranslateY(300);
+        setTranslateX(START_POSITION_X);
+        setTranslateY(START_POSITION_Y);
     }
 
-    public void moveX(int value){
+    //перемещает птичку по горизонтали
+    public void moveX(int value, ArrayList<Wall> walls, ScoreBar scoreBar){
         for (int i = 0; i < value; i++) {
-            for (Wall wall: Game.walls) {
+            for (Wall wall: walls) {
+                //при столкновении с препятствием - птичка упирается в него и умирает
                 if (getBoundsInParent().intersects(wall.getBoundsInParent())){
-                    if (getTranslateX()+34 == wall.getTranslateX()) {
+                    if (getTranslateX()+WIDTH == wall.getTranslateX()) {
                         setTranslateX(getTranslateX()-1);
                         die();
                         return;
                     }
                 }
-                if (getTranslateX()+34 == wall.getTranslateX()){
+                //при прохождении препятствия - увеличиваем счет
+                if (getTranslateX()+WIDTH == wall.getTranslateX()){
                     Game.wallCounter++;
                     if (Game.wallCounter%2==0){
                         Game.score++;
-                        Game.scoreBar.showScore(Game.score);
+                        scoreBar.showScore(Game.score);
                     }
                 }
-
             }
+
+            //если прошли все препятствия -
+            if (getTranslateX()>(Wall.getQUANTITY()-0.5)*Wall.getGAP()+Game.getStageWidth()){
+                free();
+            }
+
+            //перемещаем птичку вперед
             setTranslateX(getTranslateX()+1);
         }
     }
 
-    public void moveY(int value){
+    //перемещает птичку по вертикали
+    public void moveY(int value, ArrayList<Wall> walls){
+        //положительная value указивает на перемещение птички вниз
         boolean moveDown = value > 0;
 
         for (int i = 0; i < Math.abs(value); i++) {
-            for (Wall wall:Game.walls) {
-                if (this.getBoundsInParent().intersects(wall.getBoundsInParent())){
+            for (Wall wall:walls) {
+                if (getBoundsInParent().intersects(wall.getBoundsInParent())){
                     if (moveDown){
                         setTranslateY(getTranslateY()-1);
-                        die();
-                        return;
                     } else {
                         setTranslateY(getTranslateY()+1);
-                        return;
                     }
+                    die(wall, walls);
+                    return;
                 }
             }
 
+            //птичка не вылетает за вверхнюю границу окна
             if (getTranslateY()<0)
-                setTranslateX(0);
-            if (getTranslateY()>550-112+20-24-1)
-                setTranslateY(550-112+20-24-1);
+                setTranslateY(0);
+            //умирает при соприкосновении с землей
+            if (getTranslateY()>Game.getStageHeight()-Ground.getHEIGHT()-HEIGHT){
+                setTranslateY(Game.getStageHeight()-Ground.getHEIGHT()-HEIGHT-1);
+                die();
+            }
+            //сила притяжения(тянет вниз при падении и вверх при взмахе крыльев)
             setTranslateY(getTranslateY() + (moveDown?1:-1));
         }
     }
 
-    public void jump(){
+    //перещает птичку(прыжок), запускает звук взмаха крыла
+    public void jump(Music music){
         velocity = new Point2D(3, -9);
-        Game.music.jumpSound();
+        music.jumpSound();
     }
 
+    //освобождает птичку
+    public void free(){
+        isFree = true;
+    }
+
+    //убивает птичку(птичка наклоняется и падает)
     public void die(){
-        getTransforms().add(new Rotate(90,0,0));
-        setTranslateY(550-112+20-34-1);
         isAlive = false;
+        getTransforms().add(new Rotate(90,0,0));
+        setTranslateY(Game.getStageHeight()-Ground.getHEIGHT()-WIDTH-1);
+    }
+    //убивает птичку(птичка наклоняется и падает)
+    public void die(Wall intersectedWall, ArrayList<Wall> walls){
+        isAlive = false;
+        //наклоняем птичку
+        getTransforms().add(new Rotate(90,0,0));
+
+        Wall nextWall = walls.get(walls.indexOf(intersectedWall)+1);
+        setTranslateY(Game.getStageHeight()-Ground.getHEIGHT()-WIDTH-1);
+        //отступаем от препятствия
+        while (getBoundsInParent().intersects(intersectedWall.getBoundsInParent())
+                ||getBoundsInParent().intersects(nextWall.getBoundsInParent())){
+            setTranslateX(getTranslateX()-1);
+        }
+    }
+    //жива ли птичка
+    public boolean isAlive(){
+        return isAlive;
+    }
+
+    public boolean isFree() {
+        return isFree;
     }
 }

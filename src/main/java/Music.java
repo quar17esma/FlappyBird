@@ -1,18 +1,20 @@
-import sun.audio.AudioData;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-import sun.audio.ContinuousAudioDataStream;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.*;
+import java.io.BufferedInputStream;
 
-
+//класс отвечает за звуки и музыку
 public class Music {
-    public static Thread backgroundMusic;
-    public static Clip clipBG;
+    private static Thread backgroundMusic;
+    private static Clip clipBG;
+    private static Clip clipGameOver;
+    private static Clip clipFree;
+    private static final String BACKGROUND_MUSIC_FILE = "sounds/ThemeBackground.wav";
+    private static final String JUMP_SOUND_FILE = "sounds/jump.wav";
+    private static final String GAMEOVER_SOUND_FILE = "sounds/MarioDie.wav";
+    private static final String FREE_SOUND_FILE = "sounds/StageClear.wav";
 
+    //создает и запускает поток воспроизводящий фоновою музыку
     public synchronized void musicBackgroundPlay() {
         backgroundMusic = new Thread(new Runnable() {
             @Override
@@ -20,46 +22,84 @@ public class Music {
                 try {
                     clipBG = AudioSystem.getClip();
                     AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                            getClass().getResourceAsStream("ThemeBackground.wav"));
+                            new BufferedInputStream(getClass().getResourceAsStream(BACKGROUND_MUSIC_FILE)));
                     clipBG.open(inputStream);
                     clipBG.loop(Clip.LOOP_CONTINUOUSLY);
                     clipBG.start();
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    System.err.println(e.getMessage());
+                    System.out.println("[Run BG Music] E Error: " + e.getMessage());
                 }
             }
         });
         backgroundMusic.start();
     }
 
+    //останавливает фоновую музыку
     public synchronized void musicBackgroundStop(){
         clipBG.stop();
     }
 
+    //воспроизводит звук взмаха крыла(прижка)
     public void jumpSound(){
         try{
         Clip clipJump = AudioSystem.getClip();
         AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                getClass().getResourceAsStream("jump.wav"));
+                new BufferedInputStream(getClass().getResourceAsStream(JUMP_SOUND_FILE)));
         clipJump.open(inputStream);
         clipJump.start();
     } catch (Exception e){
-            e.printStackTrace();
+            System.out.println("[Run Jump Sound] E Error: " + e.getMessage());
         }
     }
 
-    public void gameOverSound(){
+    //воспроизводит звук проигрыша
+    public void gameOverSoundPlay(){
         try{
-            Clip clipJump = AudioSystem.getClip();
+            clipGameOver = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                    getClass().getResourceAsStream("MarioDie.wav"));
-            clipJump.open(inputStream);
-            clipJump.start();
+                    new BufferedInputStream(getClass().getResourceAsStream(GAMEOVER_SOUND_FILE)));
+            clipGameOver.open(inputStream);
+            clipGameOver.start();
+
         } catch (Exception e){
+            System.out.println("[Run Gameover Sound] E Error: " + e.getMessage());
+        }
+    }
+
+    public synchronized void gameOverSoundStop(){
+        clipGameOver.stop();
+    }
+
+    //воспроизводит звук после прохождения все препятствий
+    public void freeSoundPlay(){
+        try{
+            clipFree = AudioSystem.getClip();
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                    new BufferedInputStream(getClass().getResourceAsStream(FREE_SOUND_FILE)));
+            clipFree.open(inputStream);
+            clipFree.start();
+
+        } catch (Exception e){
+            System.out.println("[Run Free Sound] E Error: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    //останавливает звук о прохождении всех препятствий
+    public synchronized void freeSoundStop(){
+        clipFree.stop();
+    }
 
+    //останавливает все звуки
+    public synchronized void allSoundsStop(){
+        if (clipBG != null){
+            clipBG.stop();
+        }
+        if (clipGameOver != null){
+            clipGameOver.stop();
+        }
+        if (clipFree != null){
+            clipFree.stop();
+        }
+    }
 }

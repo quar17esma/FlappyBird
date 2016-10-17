@@ -1,153 +1,210 @@
 import javafx.animation.*;
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.geometry.Side;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
- * Created by Сергей on 04.08.2016.
+ * Created by Quar17esma on 04.08.2016.
  */
 public class Game extends Application {
-    static AnimationTimer timer;
+    private Stage primaryStage;
+    private Scene mainScene;
 
-    Image backgroundImg = new Image(getClass().getResourceAsStream("background.png"));
+    private AnimationTimer timer;
 
-    public static Pane appRoot = new Pane();
-    public static Pane gameRoot = new Pane();
-    public static Pane groundRoot = new Pane();
+    private BackgroundImage backgroundImg;
 
-    Ground ground;
+    private Pane appRoot;
+    private Pane gameRoot;
+    private PreGameRoot preGameRoot;
+    private PostGameRoot postGameRoot;
 
-    public static Music music;
+    private Bird bird;
+    private Ground ground;
+    private ScoreBar scoreBar;
+    private ArrayList<Wall> walls = new ArrayList<>();
 
-    public static ArrayList<Wall> walls = new ArrayList<>();
-    Bird bird = new Bird();
-    public static int score = 0;
-    public static int wallCounter = 0;
-    public Label scoreLabel = new Label("Number: " + score);
-    public static ScoreBar scoreBar;
-    Scene mainScene;
+    private Music music;
 
-    public Parent createContent(){
-        ImageView background = new ImageView(backgroundImg);
-        background.setFitWidth(600);
-        background.setFitHeight(550);
+    static int score = 0;
+    static int wallCounter = 0;
 
+    boolean isGameStarted;
+
+    //размер окна
+    private static final double STAGE_WIDTH = 600;
+    private static final double STAGE_HEIGHT = 550;
+    //файл фона
+    private static final String BACKGROUND_FILE = "images/background.png";
+    //файл иконки окна
+    private static final String PRIMARY_STAGE_ICON_FILE = "images/BirdTitleBar.png";
+    private static final String STAGE_TITLE_TEXT = "Flappy Bird by Quar17esma";
+
+
+    private Parent createContent(){
+        //корневая панель
+        appRoot = new Pane();
+        appRoot.setPrefSize(STAGE_WIDTH,STAGE_HEIGHT);
+        appRoot.setMaxSize(STAGE_WIDTH,STAGE_HEIGHT);
+        appRoot.setBackground(createMainBackground());
+
+        //игровая панель
+        gameRoot = new Pane();
+        gameRoot.setPrefSize(STAGE_WIDTH,STAGE_HEIGHT);
+        appRoot.getChildren().add(gameRoot);
+
+        //препятствия
+        createWalls();
+
+        //земля
         ground = new Ground();
+        ground.setPrefSize((Wall.getQUANTITY()+1)*Wall.getGAP()+STAGE_WIDTH, Ground.getHEIGHT());
+        gameRoot.getChildren().add(ground);
+
+        //птичка
+        bird = new Bird();
+        gameRoot.getChildren().add(bird);
+
+        //текущий счет
+        scoreBar = new ScoreBar(1);
+        scoreBar.setTranslateX((appRoot.getPrefWidth() - Number.WIDTH*3)/2);
+        scoreBar.setTranslateY(60);
+        appRoot.getChildren().add(scoreBar);
+
+        isGameStarted = false;
+
+        //музыка
         music = new Music();
 
-        appRoot.setPrefSize(600,550);
-        appRoot.setMaxSize(600,550);
-
-        groundRoot.setPrefSize(15*350+600,550);
-
-        gameRoot.setPrefSize(600,550);
-
-        for (int i = 0; i < 15; i++) {
-            int enter = (int)(Math.random()*150+110);    //80-230
-//            int height = new Random().nextInt(550-enter);
-//            int enter = 80;
-            int height = 70;
+        //панель подсказок перед началом игры
+        preGameRoot = new PreGameRoot(bird);
+        appRoot.getChildren().add(preGameRoot);
 
 
-            Wall wallUp = new Wall(Wall.WallType.WALL_UP, height);
-            wallUp.setTranslateX(i*350+600);
+        return appRoot;
+    }
+
+    //производит необходимые действия при проигрыше или прохождении всех препятствий
+    public void gameOver(){
+        //остановка анимаци
+        timer.stop();
+        bird.animation.stop();
+
+        //панель при проигрыше (Счет, GameOver, кнопка рестарта)
+        postGameRoot = new PostGameRoot(bird, score, walls, music, primaryStage);
+        appRoot.getChildren().add(postGameRoot);
+
+        //отановка фоновой музыки и запуск звука проигрыща
+        music.musicBackgroundStop();
+
+        if (bird.isFree()) {
+            music.freeSoundPlay();
+        } else {
+            music.gameOverSoundPlay();
+        }
+
+        mainScene.setCursor(Cursor.DEFAULT);
+    }
+
+    //создает препятствия случайных размеров
+    public void createWalls(){
+        for (int i = 0; i < Wall.getQUANTITY(); i++) {
+            int enter = Wall.ENTER_MIN + new Random().nextInt(120);    //80-230
+//            int enter = 230;
+            int heightWallUp = Wall.WALL_HEIGHT_MIN
+                                + new Random().nextInt((int)STAGE_HEIGHT
+                                                        - Ground.getHEIGHT()
+                                                        - Wall.WALL_HEIGHT_MIN
+                                                        - enter-Wall.WALL_HEIGHT_MIN);
+
+            Wall wallUp = new Wall(Wall.WallType.WALL_UP, heightWallUp);
+            wallUp.setTranslateX(i*Wall.getGAP()+STAGE_WIDTH);
             wallUp.setTranslateY(0);
             walls.add(wallUp);
 
-            Wall wallDown = new Wall(Wall.WallType.WALL_DOWN, 600-height-enter-100);
-            wallDown.setTranslateX(i*350+600);
-            wallDown.setTranslateY(height+enter);
+            Wall wallDown = new Wall(Wall.WallType.WALL_DOWN, (int)STAGE_HEIGHT-heightWallUp-enter);
+            wallDown.setTranslateX(i*Wall.getGAP()+STAGE_WIDTH);
+            wallDown.setTranslateY(heightWallUp+enter);
             walls.add(wallDown);
 
             gameRoot.getChildren().addAll(wallUp, wallDown);
         }
+    }
 
-        groundRoot.setBackground(new Background(ground.myBI));
-//        groundRoot.getChildren().add(gameRoot);
-        gameRoot.getChildren().addAll(bird);
-        appRoot.getChildren().addAll(background, gameRoot, groundRoot);
+    //создает и возвращает фон для корневой панели
+    public Background createMainBackground(){
+        //фон главной панели
+        backgroundImg = new BackgroundImage(
+                new Image(getClass().getResourceAsStream(BACKGROUND_FILE),
+                        STAGE_WIDTH,
+                        STAGE_HEIGHT,
+                        false,
+                        false),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                new BackgroundPosition(Side.LEFT,0,true,Side.TOP,0,true),
+                BackgroundSize.DEFAULT);
 
-        scoreBar = new ScoreBar();
-
-//        gameRoot.setBackground(new Background(ground.myBI));
-//
-//        gameRoot.getChildren().add(bird);
-//        appRoot.getChildren().addAll(background, gameRoot, ground);
-        return appRoot;
+        return new Background(backgroundImg);
     }
 
     public void update() {
-        if (bird.isAlive) {
+        if (isGameStarted()) {
+            if (bird.isAlive()&&!bird.isFree()) {
+                if (bird.velocity.getY() < 5)
+                    bird.velocity = bird.velocity.add(0, 1);
 
-            if (bird.velocity.getY() < 5)
-                bird.velocity = bird.velocity.add(0, 1);
+                bird.moveX((int) bird.velocity.getX(), walls, scoreBar);
+                bird.moveY((int) bird.velocity.getY(), walls);
 
-            bird.moveX((int) bird.velocity.getX());
-            bird.moveY((int) bird.velocity.getY());
-            scoreLabel.setText("Number: " + score);
-
-            bird.translateXProperty().addListener((ov, oldValue, newValue) -> {
-                int offset = newValue.intValue();
-                if (offset > 200) {
-                    gameRoot.setLayoutX(-(offset - 200));
-                    groundRoot.setLayoutX(-(offset - 200));
-                }
-            });
-        } else
-            gameOver();
-    }
-
-    public void gameOver(){
-        Game.timer.stop();
-
-        GameOver gameOver = new GameOver();
-        gameOver.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-GameOver.WIDTH)/2);
-        gameOver.setTranslateY(bird.velocity.getY()+130);
-        Game.appRoot.getChildren().add(gameOver);
-
-        ScoreBoard scoreBoard = new ScoreBoard();
-        scoreBoard.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-ScoreBoard.WIDTH)/2);
-        scoreBoard.setTranslateY(bird.velocity.getY()+230);
-        Game.appRoot.getChildren().add(scoreBoard);
-
-        PlayButton playButton = new PlayButton();
-        playButton.setTranslateX(bird.velocity.getX()+(Game.appRoot.getPrefWidth()-PlayButton.WIDTH)/2);
-        playButton.setTranslateY(bird.velocity.getY()+360);
-        Game.appRoot.getChildren().add(playButton);
-        playButton.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            mainScene = new Scene(createContent());
-            mainScene.setOnMouseClicked(event1->{
-                bird.jump();
-                bird.animation.play();
-            });
-            timer.start();
-            music.musicBackgroundPlay();
-        });
-
-        Game.music.musicBackgroundStop();
-        Game.music.gameOverSound();
+                bird.translateXProperty().addListener((ov, oldValue, newValue) -> {
+                    int offset = newValue.intValue();
+                    if (offset > 200) {
+                        gameRoot.setLayoutX(-(offset - 200));
+                    }
+                });
+            } else {
+                gameOver();
+            }
+        }
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        mainScene = new Scene(createContent());
-        mainScene.setOnMouseClicked(event->{
-            bird.jump();
-            bird.animation.play();
-        });
+        //главоное окно
+        this.primaryStage = primaryStage;
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(PRIMARY_STAGE_ICON_FILE)));
+        primaryStage.setTitle(STAGE_TITLE_TEXT);
+        primaryStage.setWidth(STAGE_WIDTH);
+        primaryStage.setHeight(STAGE_HEIGHT);
+        primaryStage.setResizable(false);
 
+        //главная сцена в окне
+        mainScene = new Scene(createContent());
+        mainScene.setCursor(Cursor.HAND);
+        mainScene.setOnMouseClicked(event->{
+            appRoot.getChildren().remove(preGameRoot);
+
+            isGameStarted = true;
+
+            if (bird.isAlive()&&!bird.isFree()){
+                bird.jump(music);
+                bird.animation.play();
+            }
+        });
         primaryStage.setScene(mainScene);
+
         primaryStage.show();
 
+        //запуск анимации
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -156,10 +213,27 @@ public class Game extends Application {
         };
         timer.start();
 
+        //запуск фоновой музыки
         music.musicBackgroundPlay();
     }
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static double getStageWidth() {
+        return STAGE_WIDTH;
+    }
+
+    public static double getStageHeight() {
+        return STAGE_HEIGHT;
+    }
+
+    public ArrayList<Wall> getWalls() {
+        return walls;
+    }
+
+    public boolean isGameStarted(){
+        return isGameStarted;
     }
 }
