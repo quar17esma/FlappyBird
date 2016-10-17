@@ -11,7 +11,7 @@ public class Music {
     private static Clip clipFree;
     private static final String BACKGROUND_MUSIC_FILE = "sounds/ThemeBackground.wav";
     private static final String JUMP_SOUND_FILE = "sounds/jump.wav";
-    private static final String GAMEOVER_SOUND_FILE = "sounds/MarioDie.wav";
+    private static final String GAMEOVER_SOUND_FILE = "sounds/GameOver.wav";
     private static final String FREE_SOUND_FILE = "sounds/StageClear.wav";
 
     //создает и запускает поток воспроизводящий фоновою музыку
