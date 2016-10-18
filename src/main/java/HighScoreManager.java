@@ -4,7 +4,7 @@ import java.io.*;
 public class HighScoreManager {
 
     //файл хранения лучшего счета
-    private static final String HIGHSCORE_FILE = "../high_score.dat";
+    private static final String HIGHSCORE_FILE = "high_score.dat";
 
     private File scoreFile;
     private ObjectOutputStream outputStream;
