@@ -14,6 +14,7 @@ This project tries to take a modern approach to Java software development, produ
 
 - Java 8 with JavaFX 8 and lambdas support
 - [Apache Maven](https://maven.apache.org/) for build automation and dependency resolution
+- Logging with Log4j [Log4j](http://logging.apache.org/)
 - IDE used in project is [IntelliJ IDEA 15](https://www.jetbrains.com/idea/)
 
 ## Installation:
