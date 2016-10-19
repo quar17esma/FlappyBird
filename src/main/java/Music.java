@@ -1,3 +1,5 @@
+import org.apache.log4j.Logger;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -5,11 +7,17 @@ import java.io.BufferedInputStream;
 
 //класс отвечает за звуки и музыку
 public class Music {
+    //логгер
+    final static Logger logger = Logger.getLogger(Music.class);
+
     private static Thread backgroundMusic;
+
     private static Clip clipBG;
     private static Clip clipJump;
     private static Clip clipGameOver;
     private static Clip clipFree;
+
+    //файлы звуков
     private static final String BACKGROUND_MUSIC_FILE = "sounds/ThemeBackground.wav";
     private static final String JUMP_SOUND_FILE = "sounds/Jump.wav";
     private static final String GAMEOVER_SOUND_FILE = "sounds/GameOver.wav";
@@ -28,7 +36,7 @@ public class Music {
                     clipBG.loop(Clip.LOOP_CONTINUOUSLY);
                     clipBG.start();
                 } catch (Exception e) {
-                    System.out.println("[Run BG Music] E Error: " + e.getMessage());
+                    logger.error("[Run BG Music] E Error: ", e);
                 }
             }
         });
@@ -49,7 +57,7 @@ public class Music {
         clipJump.open(inputStream);
         clipJump.start();
     } catch (Exception e){
-            System.out.println("[Run Jump Sound] E Error: " + e.getMessage());
+            logger.error("[Run Jump Sound] E Error: ", e);
         }
     }
 
@@ -61,9 +69,8 @@ public class Music {
                     new BufferedInputStream(getClass().getResourceAsStream(GAMEOVER_SOUND_FILE)));
             clipGameOver.open(inputStream);
             clipGameOver.start();
-
         } catch (Exception e){
-            System.out.println("[Run Gameover Sound] E Error: " + e.getMessage());
+            logger.error("[Run Gameover Sound] E Error: ", e);
         }
     }
 
@@ -79,10 +86,8 @@ public class Music {
                     new BufferedInputStream(getClass().getResourceAsStream(FREE_SOUND_FILE)));
             clipFree.open(inputStream);
             clipFree.start();
-
         } catch (Exception e){
-            System.out.println("[Run Free Sound] E Error: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("[Run Free Sound] E Error: ", e);
         }
     }
 

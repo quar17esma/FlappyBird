@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,28 +16,42 @@ import java.util.Random;
  * Created by Quar17esma on 04.08.2016.
  */
 public class Game extends Application {
+    //логгер
+    final static Logger logger = Logger.getLogger(Game.class);
+
+    //главное окно и сцена главного окна
     private Stage primaryStage;
     private Scene mainScene;
 
+    //анимация
     private AnimationTimer timer;
 
+    //фон главной сцены
     private BackgroundImage backgroundImg;
 
+    //главная панель
     private Pane appRoot;
+    //панель игры
     private Pane gameRoot;
+    //панель с подсказкой перед началом игры
     private PreGameRoot preGameRoot;
+    //панель о проигрыше или прохождении всех препятствий
     private PostGameRoot postGameRoot;
 
+    //обьекты - панели игровой панели
     private Bird bird;
     private Ground ground;
     private ScoreBar scoreBar;
     private ArrayList<Wall> walls = new ArrayList<>();
 
+    //отвечает за музыку
     private Music music;
-
+    //текущий счет
     static int score = 0;
+    //пройденые препятствия
     static int wallCounter = 0;
 
+    //началась ли игра(начинается с первым кликом)
     boolean isGameStarted;
 
     //размер окна
@@ -179,6 +194,11 @@ public class Game extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        if(logger.isInfoEnabled()){
+            logger.info("App is started");
+        }
+
         //главоное окно
         this.primaryStage = primaryStage;
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(PRIMARY_STAGE_ICON_FILE)));

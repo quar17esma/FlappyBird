@@ -2,11 +2,15 @@ import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 
 
 public class PostGameRoot extends Pane {
+    //логгер
+    final static Logger logger = Logger.getLogger(PostGameRoot.class);
+
     private GameOver gameOver;
     private Free free;
     private ScoreBoard scoreBoard;
@@ -58,7 +62,7 @@ public class PostGameRoot extends Pane {
                 try {
                     new Game().start(new Stage());
                 } catch (Exception e) {
-                    System.out.println("[ReRun] E Error: " + e.getMessage());
+                    logger.error("[ReRun] E Error: ", e);
                 }
             });
         });

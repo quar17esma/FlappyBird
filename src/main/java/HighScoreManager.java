@@ -1,7 +1,11 @@
+import org.apache.log4j.Logger;
+
 import java.io.*;
 
 //класс управляет лучшим счетом
 public class HighScoreManager {
+    //логгер
+    final static Logger logger = Logger.getLogger(HighScoreManager.class);
 
     //файл хранения лучшего счета
     private static final String HIGHSCORE_FILE = "high_score.dat";
@@ -20,7 +24,7 @@ public class HighScoreManager {
             try {
                 scoreFile.createNewFile();
             } catch (IOException e) {
-                System.out.println("[Create] IO Error: " + e.getMessage());
+                logger.error("[Create HighScore File] IO Error: ", e);
             }
         }
     }
@@ -31,32 +35,32 @@ public class HighScoreManager {
             inputStream = new ObjectInputStream(new FileInputStream(HIGHSCORE_FILE));
             highScore = (HighScore) inputStream.readObject();
         } catch (FileNotFoundException e) {
-            System.out.println("[Load] FNF Error: " + e.getMessage());
+            logger.error("[Load HighScore File] FNF Error: ", e);
         } catch (IOException e) {
-            System.out.println("[Load] IO Error: " + e.getMessage());
+            logger.error("[Load HighScore File] IO Error: ", e);
         } catch (ClassNotFoundException e) {
-            System.out.println("[Load] CNF Error: " + e.getMessage());
+            logger.error("[Load HighScore File] CNF Error: ", e);
         } finally {
             try {
                 if (inputStream != null) {
                     inputStream.close();
                 }
             } catch (IOException e) {
-                System.out.println("[Load] IO Error: " + e.getMessage());
+                logger.error("[Load HighScore File] IO Error: ", e);
             }
         }
     }
 
-//перезаписывает лучший счет в файл
+    //перезаписывает лучший счет в файл
     public void updateScoreFile(int score) {
         try {
             outputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_FILE));
             highScore.setHighScore(score);
             outputStream.writeObject(highScore);
         } catch (FileNotFoundException e) {
-            System.out.println("[Update] FNF Error: " + e.getMessage() + ",the program will try and make a new file");
+            logger.error("[Update HighScore File] FNF Error: ", e);
         } catch (IOException e) {
-            System.out.println("[Update] IO Error: " + e.getMessage());
+            logger.error("[Update HighScore File] IO Error: ", e);
         } finally {
             try {
                 if (outputStream != null) {
@@ -64,7 +68,7 @@ public class HighScoreManager {
                     outputStream.close();
                 }
             } catch (IOException e) {
-                System.out.println("[Update] Error: " + e.getMessage());
+                logger.error("[Update HighScore File] IO Error: ", e);
             }
         }
     }
